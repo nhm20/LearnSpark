@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import connectDB from './Config/database.js'
 import authRoutes from './Routes/authRoutes.js';
-
+import unitRoutes from './Routes/unitRoutes.js';
 import cors from 'cors';
 dotenv.config();
 
@@ -20,6 +20,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 
 app.use('/api/auth', authRoutes);
+app.use('/api/units', unitRoutes);
 
 const PORT = process.env.PORT || 8000;
 

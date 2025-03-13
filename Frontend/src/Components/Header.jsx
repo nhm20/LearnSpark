@@ -31,9 +31,7 @@ const Header = () => {
           >
             {user ? "Logout" : "Login"} 
           </button>
-          <button className="bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded">
-            Dark Mode
-          </button>
+          
         </nav>
       </div>
     </header>

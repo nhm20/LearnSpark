@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import Header from "../../Components/Header";
 import ManageCourses from "./ManageCourses";
 import ManageUsers from "./ManageUsers";
 import ManageTutors from "./ManageTutors";
 import AdminAnalytics from "./Analytics";
-
+import Header from "../Components/Header";
 const DashBoard = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
 

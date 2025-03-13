@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import RegisterPage from "./Pages/RegisterPage/RegisterPage";
-import DashBoard from "./Pages/Admin/AdminDashBoard";
 import LoginPage from "./Pages/LoginPage/LoginPage";
+import DashBoard from "./Admin/AdminDashBoard";
 
 function App() {
   return (<>

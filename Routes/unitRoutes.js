@@ -1,18 +1,23 @@
 import express from "express";
 import {
+  createUnit,
   getAllUnits,
   getUnitById,
-  createUnit,
   updateUnit,
   deleteUnit,
+  getClassNames,
+  getSubjects,
 } from "../Controllers/unitController.js";
-import { isAuthenticated, isAdmin } from "../Middlewares/authMiddlewares.js";
 
 const router = express.Router();
-router.get("/", getAllUnits);
-router.get("/:id", getUnitById);
-router.post("/", isAuthenticated, isAdmin, createUnit);
-router.put("/:id", isAuthenticated, isAdmin, updateUnit);
-router.delete("/:id", isAuthenticated, isAdmin, deleteUnit);
+
+// CRUD Routes
+router.post("/", createUnit); // Create a new unit
+router.get("/", getAllUnits); // Get all units
+router.get("/class-names", getClassNames); // Fetch unique class names
+router.get("/subjects", getSubjects); // Fetch unique subjects based on class level
+router.get("/:id", getUnitById); // Get a unit by ID
+router.put("/:id", updateUnit); // Update a unit by ID
+router.delete("/:id", deleteUnit); // Delete a unit by ID
 
 export default router;
