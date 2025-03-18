@@ -1,7 +1,7 @@
 import Admin from "../Models/adminModel.js";
 
-export const registerUser = async (req, res) => {
-  const { uid, name } = req.body;
+export const registerAdmin = async (req, res) => {
+  const { uid,name } = req.body;
   console.log("Received data:", req.body); // Log the received data
   try {
     let admin = await Admin.findOne({ uid });
@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
 };
 
 
-export const checkUser = async (req, res) => {
+export const checkAdmin = async (req, res) => {
   const { uid } = req.body;
   try {
     const admin = await Admin.findOne({ uid });

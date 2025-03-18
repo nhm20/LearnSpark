@@ -1,24 +1,29 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const tutorSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  firebaseUID: { type: String, required: true, unique: true }, // Authentication
-  skills: [
-    {
-      classLevel: { type: mongoose.Schema.Types.ObjectId, ref: "Class" }, // e.g., Class 12
-      subject: { type: mongoose.Schema.Types.ObjectId, ref: "Subject" }, // e.g., Physics
-      topics: [{ type: mongoose.Schema.Types.ObjectId, ref: "Topic" }], // Topics they teach
-    },
-  ],
-  availability: {
-    days: [String], // e.g., ["Monday", "Wednesday"]
-    timeSlots: [String], // e.g., ["10:00 AM - 12:00 PM"]
+const tutorSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    skills: { type: String, required: true },
+    image: { type: String, required: true },
+    college: { type: String, required: true },
+    placeOfEducation: { type: String, required: true },
+    address: { type: String, required: true },
+    gender: { type: String, required: true },
+    age: { type: String, required: true },
+    degree: { type: String, required: true },
+    bank: { type: String, required: true },
+    accNo: { type: String, required: true },
+    password: { type: String, required: true },
+    total: { type: Number, default: 0 },
+    rating: { type: Float64Array, default: 0 },
+    tested: { type: Boolean, default: false },
+    online: { type: Boolean, default: false },
+    rating: { type: Number, default: 0 },
+    passed: { type: Boolean, default: false },
+    role: { type: String, default: "tutor" },
   },
-  hourlyRate: { type: Number, default: 20 }, // Per unit session price
-  role: { type: String, enum: ["tutor", "admin"], default: "tutor" },
-},
-{ timestamps: true });
-
+  { timestamps: true }
+);
 const Tutor = mongoose.model("Tutor", tutorSchema);
 export default Tutor;

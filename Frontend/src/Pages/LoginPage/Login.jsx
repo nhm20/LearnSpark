@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth, signUpWithGoogle } from "../../Context/FireBaseConfig";
+import { auth } from "../../Context/FireBaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
@@ -40,12 +40,12 @@ const Login = () => {
       >
         Login with Email
       </button>
-      <button
+      {/* <button
         onClick={signUpWithGoogle}
         className="bg-blue-600 w-full text-white p-2 m-2 rounded-md"
       >
         Login with Google
-      </button>
+      </button> */}
     </div>
   );
 };

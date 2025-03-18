@@ -1,0 +1,196 @@
+/* Star Animation */
+@keyframes moveStars {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.3;
+    filter: brightness(2);
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-40px) translateX(30px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+.stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 0;
+  animation: moveStars 120s linear infinite; /* Slower rotation for depth */
+}
+
+.stars::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 
+    100px 100px white, 
+    200px 200px white, 
+    300px 300px white, 
+    400px 400px white, 
+    500px 500px white, 
+    600px 600px white, 
+    700px 700px white, 
+    800px 800px white, 
+    900px 900px white, 
+    1000px 1000px white, 
+    150px 50px white, 
+    250px 150px white, 
+    350px 250px white, 
+    450px 350px white, 
+    550px 450px white, 
+    650px 550px white, 
+    750px 650px white, 
+    850px 750px white, 
+    950px 850px white;
+  animation: moveStars 40s linear infinite, twinkle 3s ease-in-out infinite, drift 10s ease-in-out infinite;
+  opacity: 0.8;
+  animation-delay: 0s;
+}
+
+/* Additional star layers with varying sizes and speeds */
+.stars:nth-child(2)::before {
+  animation-delay: -5s;
+  width: 3px;
+  height: 3px;
+  box-shadow: 
+    150px 250px white, 
+    250px 350px white, 
+    350px 450px white, 
+    450px 550px white, 
+    550px 650px white, 
+    650px 750px white, 
+    750px 850px white, 
+    850px 950px white, 
+    950px 1050px white, 
+    1050px 1150px white, 
+    50px 150px white, 
+    150px 250px white, 
+    250px 350px white, 
+    350px 450px white, 
+    450px 550px white;
+  animation-duration: 50s, 4s, 15s;
+}
+
+.stars:nth-child(3)::before {
+  animation-delay: -10s;
+  width: 1px;
+  height: 1px;
+  box-shadow: 
+    200px 300px white, 
+    300px 400px white, 
+    400px 500px white, 
+    500px 600px white, 
+    600px 700px white, 
+    700px 800px white, 
+    800px 900px white, 
+    900px 1000px white, 
+    1000px 1100px white, 
+    1100px 1200px white, 
+    100px 200px white, 
+    200px 300px white, 
+    300px 400px white, 
+    400px 500px white, 
+    500px 600px white;
+  animation-duration: 70s, 2s, 20s;
+}
+
+.stars:nth-child(4)::before {
+  animation-delay: -15s;
+  width: 4px;
+  height: 4px;
+  box-shadow: 
+    50px 50px white, 
+    150px 150px white, 
+    250px 250px white, 
+    350px 350px white, 
+    450px 450px white, 
+    550px 550px white, 
+    650px 650px white, 
+    750px 750px white, 
+    850px 850px white, 
+    950px 950px white, 
+    100px 100px white, 
+    200px 200px white, 
+    300px 300px white, 
+    400px 400px white, 
+    500px 500px white;
+  animation-duration: 80s, 5s, 25s;
+}
+
+.stars:nth-child(5)::before {
+  animation-delay: -20s;
+  width: 2px;
+  height: 2px;
+  box-shadow: 
+    300px 100px white, 
+    400px 200px white, 
+    500px 300px white, 
+    600px 400px white, 
+    700px 500px white, 
+    800px 600px white, 
+    900px 700px white, 
+    1000px 800px white, 
+    1100px 900px white, 
+    1200px 1000px white, 
+    200px 100px white, 
+    300px 200px white, 
+    400px 300px white, 
+    500px 400px white, 
+    600px 500px white;
+  animation-duration: 90s, 3s, 30s;
+}
+
+/* Randomize star positions */
+.stars::before {
+  top: calc(100% * var(--y));
+  left: calc(100% * var(--x));
+}
+
+.stars:nth-child(2)::before {
+  top: calc(100% * var(--y2));
+  left: calc(100% * var(--x2));
+}
+
+.stars:nth-child(3)::before {
+  top: calc(100% * var(--y3));
+  left: calc(100% * var(--x3));
+}
+
+.stars:nth-child(4)::before {
+  top: calc(100% * var(--y4));
+  left: calc(100% * var(--x4));
+}
+
+.stars:nth-child(5)::before {
+  top: calc(100% * var(--y5));
+  left: calc(100% * var(--x5));
+}

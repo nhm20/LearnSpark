@@ -7,6 +7,7 @@ import {
   deleteUnit,
   getClassNames,
   getSubjects,
+  getSimilarUnits,
 } from "../Controllers/unitController.js";
 
 const router = express.Router();
@@ -19,5 +20,7 @@ router.get("/subjects", getSubjects); // Fetch unique subjects based on class le
 router.get("/:id", getUnitById); // Get a unit by ID
 router.put("/:id", updateUnit); // Update a unit by ID
 router.delete("/:id", deleteUnit); // Delete a unit by ID
+
+router.get("/:id/similar", getSimilarUnits);
 
 export default router;

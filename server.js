@@ -1,8 +1,10 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import connectDB from './Config/database.js'
-import authRoutes from './Routes/authRoutes.js';
 import unitRoutes from './Routes/unitRoutes.js';
+import userRoutes from './Routes/userRoutes.js';
+import adminRoutes from './Routes/adminRoutes.js';
+import tutorRoutes from './Routes/tutorRoutes.js';
 import cors from 'cors';
 dotenv.config();
 
@@ -19,7 +21,9 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/tutor", tutorRoutes);
 app.use('/api/units', unitRoutes);
 
 const PORT = process.env.PORT || 8000;

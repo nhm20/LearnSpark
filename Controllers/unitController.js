@@ -77,10 +77,11 @@ export const updateUnit = async (req, res) => {
     res.status(200).json(updatedUnit);
   } catch (error) {
     console.error("Error updating unit:", error); // More detailed error log
-    res.status(500).json({ message: "Error updating unit", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error updating unit", error: error.message });
   }
 };
-
 
 // Delete a unit by ID
 export const deleteUnit = async (req, res) => {
@@ -138,3 +139,36 @@ export const getSubjects = async (req, res) => {
   }
 };
 
+export const getSimilarUnits = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid Unit ID format" });
+    }
+
+    const unit = await Unit.findById(id);
+    if (!unit) {
+      return res.status(404).json({ message: "Unit not found" });
+    }
+
+    const similarUnits = await Unit.find({
+      $and: [
+        { subject: unit.subject },
+        { classLevel: unit.classLevel },
+        { _id: { $ne: unit._id } },
+      ],
+    });
+
+    if (!similarUnits.length) {
+      return res.status(404).json({ message: "No similar units found" });
+    }
+
+    res.status(200).json(similarUnits);
+  } catch (error) {
+    console.error("Error fetching similar units:", error);
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
