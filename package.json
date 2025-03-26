@@ -4,9 +4,12 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "build": "vite build",
     "start": "node server.js",
     "server": "nodemon server.js",
+    "build-w":"vite build && cd FrontEnd && vite build",
     "frontEnd": "cd FrontEnd && npm run dev",
+    "install": "npm i && cd FrontEnd && npm i",
     "dev": "concurrently \"npm run server\" \"npm run frontEnd\""
   },
   "author": "",
