@@ -28,7 +28,7 @@ const Header = ({ onSearch, resetSearchQuery, cartItemCount }) => {
   };
 
   const handleCartClick = () => {
-    navigate("/cart");
+    navigate("/orders");
   };
 
   return (

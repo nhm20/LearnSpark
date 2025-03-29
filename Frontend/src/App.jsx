@@ -7,6 +7,7 @@ import Homepage from "./Pages/HomePage/Homepage";
 import CourseDetails from "./User/CourseDetails";
 import CoursesPage from "./User/CoursePage/Courses";
 import Payment from "./User/Payment";
+import OrdersPage from "./User/OrdersPage/OrdersPage";
 
 function App() {
   return (<>
@@ -17,6 +18,7 @@ function App() {
       <Route path="/courses" element={<CoursesPage />} />
       <Route path="/courses/:id" element={<CourseDetails />} />
       <Route path="/payment" element={<Payment />} />
+      <Route path="/orders" element={<OrdersPage/>}/>
       <Route path="/" element={<DashBoard/>} />
     </Routes>
   </>);

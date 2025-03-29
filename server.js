@@ -5,6 +5,7 @@ import unitRoutes from './Routes/unitRoutes.js';
 import userRoutes from './Routes/userRoutes.js';
 import adminRoutes from './Routes/adminRoutes.js';
 import tutorRoutes from './Routes/tutorRoutes.js';
+import orderRoutes from './Routes/orderRoutes.js';
 import cors from 'cors';
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/admin', adminRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/tutor", tutorRoutes);
 app.use('/api/units', unitRoutes);
+app.use('/api/orders', orderRoutes);
 
 const PORT = process.env.PORT || 8000;
 

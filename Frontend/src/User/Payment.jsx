@@ -1,64 +1,76 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import axios from "axios";
 
-const Payment = () => {
-  const location = useLocation();
+const CoursePayment = () => {
+  const initialOptions = {
+    clientId: import.meta.env.VITE_PAYPAL_CLIENT_ID, // Make sure this is correct
+    currency: "USD",
+    intent: "capture", // lowercase might work better
+    environment: "sandbox" // ensure this is set
+  };
+  const styles = {
+    shape: "rect",
+    layout: "vertical",
+  };
+  
   const navigate = useNavigate();
-  const course = location.state?.course;
 
-  if (!course) {
-    return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
-        <p className="text-xl">
-          No course selected. Please go back and try again.
-        </p>
-        <button
-          onClick={() => navigate("/")}
-          className="mt-4 px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition duration-300"
-        >
-          Go Back
-        </button>
-      </div>
-    );
-  }
+  const onApprove = async (data) => {
+    try {
+      if (!data.orderID) {
+        console.error("No order ID returned from PayPal");
+        return;
+      }
+      const response = await axios.get(
+        `http://localhost:8000/api/orders/capturepayment/${data.orderID}`
+      );
+      const res = response.data;
+      console.log("Payment successful:", res);
+      navigate("/complete-payment"); // Navigate to confirmation page
+    } catch (error) {
+      console.error("Error capturing payment:", error);
+      navigate("/cancel-payment"); // Navigate to cancellation page
+    }
+  };
 
-  const handlePayment = () => {
-    console.log("Initiating payment for:", course.name, "Price:", course.price);
-    // You can integrate with a payment gateway (e.g., Stripe, PayPal) here
-    alert(
-      `Payment processing for ${course.name} - $${course.price.toFixed(2)}`
-    );
+  const onError = (error) => {
+    console.error("Error during PayPal transaction:", error);
+  };
+
+  const onCreateOrder = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/api/orders/createorder"
+      );
+      return response.data.orderId; // Ensure your backend returns orderId
+    } catch (error) {
+      console.error("Error creating order:", error);
+      return null;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center">
-      <h1 className="text-3xl font-bold mb-4">Complete Your Enrollment</h1>
-      <img
-        src={
-          course.image?.trim()
-            ? course.image
-            : "https://via.placeholder.com/600x300"
-        }
-        alt={course.name}
-        className="w-64 h-40 object-cover rounded-lg mb-4"
-      />
-      <p className="text-lg mb-2 font-semibold">Course: {course.name}</p>
-      <p className="text-lg">Class Level: {course.classLevel || "N/A"}</p>
-      <p className="text-lg">Subject: {course.subject || "N/A"}</p>
-      <p className="text-lg">
-        Time Limit: {course.timeLimit ? `${course.timeLimit} min` : "N/A"}
-      </p>
-      <p className="text-xl font-bold text-green-500 mt-4">
-        {course.price ? `$${course.price.toFixed(2)}` : "Free"}
-      </p>
-      <button
-        onClick={handlePayment}
-        className="mt-4 px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-300"
-      >
-        Proceed to Payment
-      </button>
+    <div className="min-h-screen bg-black text-white p-6">
+      <div className="max-w-2xl mx-auto bg-gray-900 rounded-xl p-8 shadow-lg">
+        <header className="mb-8 text-center">
+          <h1 className="text-3xl font-bold">Complete Your Payment</h1>
+        </header>
+        <h2>Select Plan</h2>
+        <p>Free Limited features</p>
+        <p>Premium Unlimited features</p>
+        <PayPalScriptProvider options={initialOptions}>
+          <PayPalButtons
+            style={styles}
+            createOrder={onCreateOrder}
+            onApprove={onApprove}
+            onError={onError}
+          />
+        </PayPalScriptProvider>
+      </div>
     </div>
   );
 };
 
-export default Payment;
+export default CoursePayment;

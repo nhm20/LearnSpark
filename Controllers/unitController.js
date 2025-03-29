@@ -1,3 +1,4 @@
+import axios from "axios";
 import Unit from "../Models/unitModel.js";
 import mongoose from "mongoose";
 
@@ -15,11 +16,35 @@ export const createUnit = async (req, res) => {
   }
 };
 
-// Get all units
+// Get all units with pagination
 export const getAllUnits = async (req, res) => {
   try {
-    const units = await Unit.find();
-    res.status(200).json(units);
+    // Extract page and limit from query parameters
+    const page = parseInt(req.query.page) || 1; // Default to page 1 if not provided
+    const limit = parseInt(req.query.limit) || 10; // Default to 10 units per page if not provided
+
+    // Calculate the skip value for MongoDB (how many units to skip)
+    const skip = (page - 1) * limit;
+
+    // Get the total number of units
+    const totalUnits = await Unit.countDocuments();
+
+    // Get the units with pagination
+    const units = await Unit.find().skip(skip).limit(limit);
+
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(totalUnits / limit);
+
+    // Return the units with pagination metadata
+    res.status(200).json({
+      units,
+      pagination: {
+        totalUnits,
+        totalPages,
+        currentPage: page,
+        limit,
+      },
+    });
   } catch (error) {
     res
       .status(500)
