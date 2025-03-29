@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Search } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Search, Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useDebounce } from "use-debounce";
@@ -10,7 +10,23 @@ const SearchBar = ({ onSearch }) => {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
   const navigate = useNavigate();
+  const searchRef = useRef(null);
+
+  // Close recommendations when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setRecommendations([]);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Fetch recommendations when debouncedQuery changes
   useEffect(() => {
@@ -30,7 +46,7 @@ const SearchBar = ({ onSearch }) => {
           }
         );
         const results = response.data.units.map((unit) => unit.name) || [];
-        setRecommendations(results.slice(0, 4)); // Show only the first 4 recommendations
+        setRecommendations(results.slice(0, 4));
       } catch (error) {
         console.error("Error fetching recommendations:", error);
         setError("Failed to fetch recommendations. Please try again.");
@@ -43,95 +59,101 @@ const SearchBar = ({ onSearch }) => {
     fetchRecommendations();
   }, [debouncedQuery]);
 
-  // Handle search submission
   const handleSearch = () => {
-    if (query.trim() === "") return; // Ignore empty queries
+    if (query.trim() === "") return;
 
-    console.log("Search triggered with query:", query);
     if (typeof onSearch === "function") {
       onSearch(query);
     }
-    navigate(`/courses?query=${query}`); // Navigate to the search results page
-    setRecommendations([]); // Clear recommendations after search
+    navigate(`/courses?query=${encodeURIComponent(query)}`);
+    setRecommendations([]);
   };
 
-  // Handle selecting a recommendation
   const handleSelectRecommendation = (item) => {
-    setQuery(item); // Set the query to the selected recommendation
-    setRecommendations([]); // Clear recommendations immediately
-    navigate(`/courses?query=${item}`); // Navigate directly to the selected item's page
+    setQuery(item);
+    setRecommendations([]);
+    navigate(`/courses?query=${encodeURIComponent(item)}`);
   };
-
-  // Clear recommendations if the query is empty
-  useEffect(() => {
-    if (query.trim() === "") {
-      setRecommendations([]);
-    }
-  }, [query]);
 
   return (
-    <div className="relative w-full">
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search for courses or tutors..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-        className="text-white w-full px-4 py-2 border-2 border-blue-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-900"
-        aria-label="Search for courses or tutors"
-      />
+    <div className="relative w-full max-w-md mx-auto" ref={searchRef}>
+      <div className="relative flex items-center">
+        {/* Search Input with white border */}
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          className="w-full px-4 py-2 pr-10 bg-black text-white border-1 border-gray-500 rounded-full 
+                    focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500/50 
+                    transition-all duration-200 placeholder-gray-200"
+          aria-label="Search courses"
+          aria-haspopup="listbox"
+          aria-expanded={recommendations.length > 0}
+        />
 
-      {/* Search Button */}
-      <button
-        onClick={handleSearch}
-        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-blue-600"
-        aria-label="Search"
-      >
-        <Search className="w-5 h-5" />
-      </button>
-
-      {/* Loading State */}
-      {loading && (
-        <div
-          aria-live="assertive"
-          className="absolute mt-2 w-full bg-black border border-black rounded-lg shadow-lg"
+        {/* Search Button */}
+        <button
+          onClick={handleSearch}
+          className="absolute right-3 text-gray-300 hover:text-blue-400 transition-colors duration-200"
+          aria-label="Search"
         >
-          <p className="px-4 py-2 text-white">Loading...</p>
-        </div>
-      )}
+          {loading ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <Search className="w-5 h-5" />
+          )}
+        </button>
+      </div>
 
-      {/* Error State */}
-      {error && (
-        <div
-          aria-live="assertive"
-          className="absolute mt-2 w-full bg-white border border-blue-300 rounded-lg shadow-lg"
-        >
-          <p className="px-4 py-2 text-red-500">{error}</p>
-        </div>
-      )}
+      {/* Recommendations Dropdown */}
+      {(loading || error || recommendations.length > 0) && isFocused && (
+        <div className="absolute mt-2 w-full bg-black border border-gray-700 rounded-lg shadow-2xl z-50 overflow-hidden">
+          {/* Loading State */}
+          {loading && (
+            <div className="px-4 py-3 text-gray-300 flex items-center gap-2">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span>Searching...</span>
+            </div>
+          )}
 
-      {!loading && recommendations.length > 0 && (
-        <div className="absolute mt-2 p-2 w-full bg-black border-2 border-blue-800 rounded-2xl shadow-lg z-10">
-          <ul className="max-h-60 overflow-y-auto">
-            {recommendations.map((item, index) => (
-              <li
-                key={index}
-                className="px-4 py-2 text-white hover:bg-blue-400 cursor-pointer"
-                onClick={() => handleSelectRecommendation(item)}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    handleSelectRecommendation(item);
-                  }
-                }}
-                tabIndex={0}
-                role="button"
-                aria-label={`Select ${item}`}
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
+          {/* Error State */}
+          {error && (
+            <div className="px-4 py-3 text-red-400 bg-red-900/20">
+              {error}
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {!loading && recommendations.length > 0 && (
+            <ul
+              className="py-1"
+              role="listbox"
+              aria-label="Search recommendations"
+            >
+              {recommendations.map((item, index) => (
+                <li
+                  key={index}
+                  className="px-4 py-2.5 text-gray-200 hover:bg-gray-800/80 cursor-pointer 
+                            transition-colors duration-150 border-t border-gray-700 first:border-t-0"
+                  onClick={() => handleSelectRecommendation(item)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSelectRecommendation(item);
+                    }
+                  }}
+                  tabIndex={0}
+                  role="option"
+                  aria-selected={false}
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

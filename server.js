@@ -21,7 +21,10 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
 app.use('/api/admin', adminRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/tutor", tutorRoutes);

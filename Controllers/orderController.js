@@ -1,134 +1,73 @@
-import { response } from "express";
-import axios from "axios";
 import dotenv from "dotenv";
+import braintree from "braintree";
+import Order from "../Models/orderModel.js";
 dotenv.config();
 
-export const getAccessToken = async () => {
+var gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
+});
+
+export const braintreeTokenController = async (req, res) => {
   try {
-    const response = await axios.post(
-      `${process.env.PAYPAL_BASEURL}/v1/oauth2/token`,
-      'grant_type=client_credentials',
-      {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        auth: {
-          username: process.env.PAYPAL_CLIENT_ID,
-          password: process.env.PAYPAL_SECRET_KEY,
-        },
+    gateway.clientToken.generate({}, (err, response) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to generate client token" });
+      } else {
+        res.send(response);
       }
-    );
-    console.log("Access Token:", response.data.access_token); // Added for debugging
-    return response.data.access_token;
-  } catch (error) {
-    console.error("Error fetching access token:", error.response?.data || error.message);
-  }
-};
-
-export const createOrder = async (req, res) => {
-  try {
-    const accessToken = await getAccessToken();
-    const orderData = {
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          items: [
-            {
-              name: "Magnetism",
-              description: "Description of the Magnetism course",
-              quantity: "1",
-              unit_amount: {
-                currency_code: "USD",
-                value: "100.00", // Replace with actual unit price
-              },
-            },
-          ],
-          amount: {
-            currency_code: "USD",
-            value: "100.00", // Replace with actual total amount
-            breakdown: {
-              item_total: {
-                currency_code: "USD",
-                value: "100.00", // Replace with actual item total
-              },
-            },
-          },
-        },
-      ],
-      payment_source: {
-        paypal: {
-          experience_context: {
-            payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
-            payment_method_selected: "PAYPAL",
-            brand_name: "LEarnSpark",
-            shipping_preference: "NO_SHIPPING",
-            locale: "en-US",
-            user_action: "PAY_NOW",
-            return_url: `http://localhost:5173/orders`,
-            cancel_url: `http://localhost:5173/courses`,
-          },
-        },
-      },
-    };
-
-    const response = await axios.post(
-      `${process.env.PAYPAL_BASEURL}/v2/checkout/orders`,
-      orderData,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("Order Created:", response.data);
-    const orderId = response.data.id;
-    return res.status(200).json({ orderId });
-  } catch (error) {
-    console.error("Error creating order:", error.response?.data || error.message);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-export const capturePayment = async (req, res) => {
-  try {
-    const { paymentId } = req.params;
-    const accessToken = await getAccessToken();
-    const response = await axios.post(
-      `${process.env.PAYPAL_BASEURL}/v2/checkout/orders/${paymentId}/capture`,
-      {},
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    console.log("Payment Captured:", response.data);
-    const data = response.data;
-
-    if (data.status !== "COMPLETED") {
-      return res.status(400).json({ success: false, message: "Payment not completed" });
-    }
-
-    const email = "helo@gamil.com";
-    const daysToExtend = 30;
-    const currentDate = new Date();
-    const tierEndAt = new Date(currentDate.getTime() + daysToExtend * 24 * 60 * 60 * 1000);
-
-    return res.status(200).json({
-      success: true,
-      message: "Payment successful",
-      data: {
-        email,
-        tier: "premium",
-        tierEndAt,
-      },
     });
   } catch (error) {
-    console.error("Error capturing payment:", error.response?.data || error.message);
-    return res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({ error: "Failed to generate client token" });
+  }
+};
+export const braintreePaymentController = async (req, res) => {
+  try {
+    const { cart, nonce } = req.body;
+    const totalAmount = cart.reduce((acc, item) => acc + item.price, 0);
+
+    // Validate input
+    if (!nonce || !cart || !Array.isArray(cart)) {
+      return res.status(400).json({ error: "Invalid payment data" });
+    }
+
+    const result = await gateway.transaction.sale({
+      amount: totalAmount.toFixed(2),
+      paymentMethodNonce: nonce,
+      options: {
+        submitForSettlement: true
+      }
+    });
+
+    if (result.success) {
+      const order = await new Order({
+        name: cart[0].name, // Taking first item's name
+        price: totalAmount,
+        payment: result,
+        paymentStatus: "completed"
+      }).save();
+
+      return res.json({ success: true, order });
+    } else {
+      await new Order({
+        name: cart[0].name,
+        price: totalAmount,
+        payment: result,
+        paymentStatus: "failed"
+      }).save();
+      
+      return res.status(400).json({ 
+        error: result.message || "Payment failed",
+        details: result
+      });
+    }
+  } catch (error) {
+    console.error("Payment error:", error);
+    return res.status(500).json({ 
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 };

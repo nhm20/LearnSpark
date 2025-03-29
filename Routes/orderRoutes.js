@@ -1,5 +1,5 @@
 import express from "express";
-import {createOrder, capturePayment} from "../Controllers/orderController.js";
+import { braintreeTokenController, braintreePaymentController} from "../Controllers/orderController.js";
 import { isAuthenticated, isAdmin } from "../Middlewares/authMiddlewares.js";
 
 const router = express.Router();
@@ -9,7 +9,7 @@ const router = express.Router();
 // router.put("/:id", isAuthenticated, isAdmin, updateOrderStatus);
 // router.delete("/:id", isAuthenticated, isAdmin, deleteOrder);
 
-router.post("/createorder", createOrder);
+router.get("/braintree/token", braintreeTokenController);
 
-router.get("/capturepayment/:paymentId", capturePayment);
+router.post("/braintree/payment", braintreePaymentController);
 export default router;
