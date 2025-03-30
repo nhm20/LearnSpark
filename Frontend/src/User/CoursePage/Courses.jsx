@@ -27,7 +27,7 @@ const CoursesPage = () => {
     const fetchSearchResults = async () => {
       setLoading(true);
       try {
-        const endpoint = searchQuery ? "http://localhost:8000/api/user/search" : "http://localhost:8000/api/units";
+        const endpoint = searchQuery ? "http://localhost:8000/api/units/search/results" : "http://localhost:8000/api/units";
         const params = {
           query: searchQuery,
           page,

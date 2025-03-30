@@ -1,36 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import DropIn from "braintree-web-drop-in-react";
+import axios from "axios";
 
-const CoursePayment = () => {
+const CoursePaymentPage = () => {
+  const [cart, setCart] = useState(() => {
+    return JSON.parse(localStorage.getItem("cart")) || [];
+  });
   const [clientToken, setClientToken] = useState("");
-  const [instance, setInstance] = useState(null);
+  const [instance, setInstance] = useState("");
   const [loading, setLoading] = useState(false);
-  const [tokenLoading, setTokenLoading] = useState(true);
-  const [paymentStatus, setPaymentStatus] = useState("");
   const navigate = useNavigate();
 
-  // Hardcoded cart for testing
-  const cart = [{ id: 1, name: "Test Course 1", price: 99 }];
+  //total price
+  const totalPrice = () => {
+    try {
+      let total = 0;
+      cart?.map((item) => {
+        total = total + item.price;
+      });
+      return total.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const totalPrice = () =>
-    cart.reduce((acc, item) => acc + (item.price || 0), 0);
+  //delete item
+  const removeCartItem = (pid) => {
+    try {
+      let myCart = [...cart];
+      let index = myCart.findIndex((item) => item._id === pid);
+      myCart.splice(index, 1);
+      setCart(myCart);
+      localStorage.setItem("cart", JSON.stringify(myCart));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  // Get payment gateway token
+  //get payment gateway token
   const getToken = async () => {
     try {
-      setTokenLoading(true);
-      const { data } = await axios.get(
-        "http://localhost:8000/api/orders/braintree/token"
-      );
+      const { data } = await axios.get("/api/course/braintree/token");
       setClientToken(data?.clientToken);
-      setPaymentStatus("Payment gateway ready");
     } catch (error) {
-      console.error("Error fetching token:", error);
-      setPaymentStatus("Failed to initialize payment gateway");
-    } finally {
-      setTokenLoading(false);
+      console.log(error);
     }
   };
 
@@ -38,85 +55,80 @@ const CoursePayment = () => {
     getToken();
   }, []);
 
-  // Handle payment
+  //handle payments
   const handlePayment = async () => {
     try {
-      if (!instance) {
-        setPaymentStatus("Payment gateway not ready");
-        return;
-      }
-
       setLoading(true);
-      setPaymentStatus("Processing payment...");
-
-      // Get payment method nonce
       const { nonce } = await instance.requestPaymentMethod();
-
-      // Validate cart data
-      if (!cart || !Array.isArray(cart) || cart.length === 0) {
-        throw new Error("Invalid cart data");
-      }
-
-      // Send to backend
-      const { data } = await axios.post(
-        "http://localhost:8000/api/orders/braintree/payment",
-        {
-          nonce,
-          cart: cart.map((item) => ({
-            name: item.name,
-            price: parseFloat(item.price),
-          })),
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (data.success) {
-        setPaymentStatus("Payment successful! Redirecting...");
-        setTimeout(() => navigate("/success"), 2000);
-      } else {
-        throw new Error(data.error || "Payment failed");
-      }
+      const { data } = await axios.post("/api/course/braintree/payment", {
+        nonce,
+        cart,
+      });
+      setLoading(false);
+      localStorage.removeItem("cart");
+      setCart([]);
+      navigate("/dashboard/user/enrolledcourses");
+      toast.success("Payment Completed Successfully ");
     } catch (error) {
-      console.error("Payment error:", error);
-      setPaymentStatus(error.response?.data?.error || error.message);
-    } finally {
+      console.log(error);
       setLoading(false);
     }
   };
 
   return (
-    <div className="container mx-auto mt-8">
-      <div className="flex justify-center">
-        <div className="w-full max-w-lg">
-          <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-            <div className="bg-primary text-white text-center py-4">
-              <h3 className="text-xl font-semibold">Test Payment</h3>
-            </div>
-            <div className="px-6 py-4">
-              <h5 className="text-lg font-medium mb-4">Order Summary</h5>
-              <ul className="list-none space-y-2">
-                {cart.map((item) => (
-                  <li key={item.id} className="flex justify-between">
-                    <span>{item.name}</span>
-                    <span>${item.price.toFixed(2)}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="flex justify-between font-semibold mt-4">
-                <h6>Total:</h6>
-                <h6>${totalPrice().toFixed(2)}</h6>
-              </div>
-
-              <div className="mt-6">
-                {tokenLoading ? (
-                  <div className="bg-blue-100 text-blue-700 p-4 rounded-lg text-center">
-                    Loading payment gateway...
+    <>
+      <div className="cart-page">
+        <div className="row">
+          <div className="col-md-12">
+            <h1 className="text-center bg-light p-2 mb-1">
+              Hello Guest
+              <p className="text-center">
+                {cart?.length
+                  ? `You Have ${cart.length} items in your cart`
+                  : "Your Cart Is Empty"}
+              </p>
+            </h1>
+          </div>
+        </div>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-7 p-0 m-0">
+              {cart?.map((p) => (
+                <div className="row card flex-row" key={p._id}>
+                  <div className="col-md-4">
+                    <img
+                      src={`/api/s2/course/course-photo/${p._id}`}
+                      className="card-img-top"
+                      alt={p.name}
+                      width="100%"
+                      height={"130px"}
+                    />
                   </div>
-                ) : clientToken ? (
+                  <div className="col-md-4">
+                    <p>{p.name}</p>
+                    <p>{p.description.substring(0, 30)}</p>
+                    <p>Price : {p.price}</p>
+                  </div>
+                  <div className="col-md-4 cart-remove-btn">
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => removeCartItem(p._id)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="col-md-5 cart-summary">
+              <h2>Cart Summary</h2>
+              <p>Total | Checkout | Payment</p>
+              <hr />
+              <h4>Total : {totalPrice()} </h4>
+              <div className="mt-2">
+                {!clientToken || !cart?.length ? (
+                  ""
+                ) : (
                   <>
                     <DropIn
                       options={{
@@ -127,40 +139,23 @@ const CoursePayment = () => {
                       }}
                       onInstance={(instance) => setInstance(instance)}
                     />
+
                     <button
-                      className="w-full mt-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 disabled:opacity-50"
+                      className="btn btn-primary"
                       onClick={handlePayment}
                       disabled={loading || !instance}
                     >
-                      {loading ? "Processing..." : "Make Payment"}
+                      {loading ? "Processing ...." : "Make Payment"}
                     </button>
                   </>
-                ) : (
-                  <div className="bg-red-100 text-red-700 p-4 rounded-lg text-center">
-                    Failed to load payment gateway
-                  </div>
                 )}
               </div>
-
-              {paymentStatus && (
-                <div
-                  className={`mt-4 p-4 rounded-lg text-center ${
-                    paymentStatus.includes("success")
-                      ? "bg-green-100 text-green-700"
-                      : paymentStatus.includes("failed")
-                      ? "bg-red-100 text-red-700"
-                      : "bg-blue-100 text-blue-700"
-                  }`}
-                >
-                  {paymentStatus}
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default CoursePayment;
+export default CoursePaymentPage;

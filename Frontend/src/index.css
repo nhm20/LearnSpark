@@ -14,3 +14,19 @@ body{
   --font-Montserrat:'Montserrat', sans-serif;
   --font-OpenSans:'OpenSans', sans-serif;
 }
+/* Custom select dropdown styling */
+select {
+  background-color: black;
+  color: white;
+}
+
+select option {
+  background-color: black;
+  color: white;
+}
+
+/* For Firefox */
+select:-moz-focusring {
+  color: transparent;
+  text-shadow: 0 0 0 white;
+}

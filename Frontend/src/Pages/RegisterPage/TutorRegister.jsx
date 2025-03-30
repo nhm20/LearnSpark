@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
-import TutorRegister2 from "./TutorRegister2"; // Import Step 2 component
+import TutorRegister2 from "./TutorRegister2";
+import { useNavigate } from "react-router-dom";
 
 const TutorRegister = () => {
   const [formData, setFormData] = useState({
@@ -13,15 +14,17 @@ const TutorRegister = () => {
   });
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState({});
-  const [step, setStep] = useState(1); // Track current step
+  const [loading, setLoading] = useState(false);
+  const [step, setStep] = useState(1);
+  const navigate = useNavigate();
 
   const handleChange = async (e) => {
     const { name, value, files } = e.target;
 
     if (name === "image") {
       if (files[0] && files[0].type.startsWith("image/")) {
-        setFormData((prevState) => ({ ...prevState, image: files[0] }));
-        setError((prevState) => ({ ...prevState, image: "" }));
+        setFormData((prev) => ({ ...prev, image: files[0] }));
+        setError((prev) => ({ ...prev, image: "" }));
 
         const imageUrl = URL.createObjectURL(files[0]);
         setPreview(imageUrl);
@@ -34,61 +37,52 @@ const TutorRegister = () => {
         );
 
         try {
-          const cloudinaryResponse = await axios.post(
+          setLoading(true);
+          const response = await axios.post(
             `https://api.cloudinary.com/v1_1/${
               import.meta.env.VITE_APP_CLOUDINARY_CLOUD_NAME
             }/image/upload`,
             formDataCloudinary
           );
-
-          if (cloudinaryResponse.data?.secure_url) {
-            setFormData((prevState) => ({
-              ...prevState,
-              image: cloudinaryResponse.data.secure_url,
-            }));
-          } else {
-            throw new Error("Cloudinary did not return a secure URL");
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          setError((prevState) => ({
-            ...prevState,
-            image: "Image upload to Cloudinary failed.",
+          setFormData((prev) => ({
+            ...prev,
+            image: response.data.secure_url,
           }));
+        } catch (err) {
+          setError((prev) => ({
+            ...prev,
+            image: "Image upload failed",
+          }));
+        } finally {
+          setLoading(false);
         }
       } else {
-        setError((prevState) => ({
-          ...prevState,
-          image: "Invalid image file",
+        setError((prev) => ({
+          ...prev,
+          image: "Please select a valid image",
         }));
-        setPreview(null);
       }
     } else {
-      setFormData((prevState) => ({ ...prevState, [name]: value }));
-      setError((prevState) => ({ ...prevState, [name]: "" }));
+      setFormData((prev) => ({ ...prev, [name]: value }));
+      setError((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateForm = () => {
-    let isValid = true;
-    let newError = {};
-
+    const newError = {};
     if (!formData.name.trim()) newError.name = "Name is required";
     if (!formData.email.trim()) newError.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newError.email = "Invalid email format";
-
     if (!formData.password.trim()) newError.password = "Password is required";
     else if (formData.password.length < 6)
       newError.password = "Password must be at least 6 characters";
-
     if (!formData.confirmPassword.trim())
       newError.confirmPassword = "Confirm Password is required";
     else if (formData.password !== formData.confirmPassword)
       newError.confirmPassword = "Passwords do not match";
-
-    if (!formData.gender.trim()) newError.gender = "Gender is required";
-    if (!formData.image) newError.image = "Image is required";
+    if (!formData.gender) newError.gender = "Gender is required";
+    if (!formData.image) newError.image = "Profile image is required";
 
     setError(newError);
     return Object.keys(newError).length === 0;
@@ -96,133 +90,118 @@ const TutorRegister = () => {
 
   const handleNext = () => {
     if (validateForm()) {
-      setStep(2); // Move to Step 2
-    } else {
-      setError((prevState) => ({
-        ...prevState,
-        general: "Please fill in all required fields.",
-      }));
+      setStep(2);
     }
   };
 
   return (
-    <div className="h-full w-full flex items-center justify-center m-4 p-2 rounded-2xl shadow-xl sm:w-full md:w-8/12 lg:w-8/12 xl:w-8/12">
-      <div className="space-y-6 w-full">
+    <div className="w-full max-w-md mx-auto p-4 sm:p-6">
+      <div className="space-y-3">
         {step === 1 ? (
           <>
-            {/* Name Field */}
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter your name"
-              className="w-full p-3 bg-black text-white rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:bg-black transition duration-300 shadow-sm focus:outline-none text-xl"
+              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
             />
-            {error.name && (
-              <div className="text-red-600 text-sm mt-1">{error.name}</div>
-            )}
+            {error.name && <p className="text-red-600 text-xs mt-1">{error.name}</p>}
 
-            {/* Email Field */}
             <input
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Enter your email"
-              className="w-full p-3 bg-black rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-sm focus:outline-none text-xl text-white"
+              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
             />
-            {error.email && (
-              <div className="text-red-600 text-sm mt-1">{error.email}</div>
-            )}
+            {error.email && <p className="text-red-600 text-xs mt-1">{error.email}</p>}
 
-            {/* Password Field */}
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               placeholder="Enter your password"
-              className="w-full p-3 bg-black rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-sm focus:outline-none text-xl text-white"
+              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
             />
-            {error.password && (
-              <div className="text-red-600 text-sm mt-1">{error.password}</div>
-            )}
+            {error.password && <p className="text-red-600 text-xs mt-1">{error.password}</p>}
 
-            {/* Confirm Password Field */}
             <input
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
               placeholder="Confirm your password"
-              className="w-full p-3 bg-black rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-sm focus:outline-none text-xl text-white"
+              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
             />
             {error.confirmPassword && (
-              <div className="text-red-600 text-sm mt-1">
-                {error.confirmPassword}
+              <p className="text-red-600 text-xs mt-1">{error.confirmPassword}</p>
+            )}
+
+            <div className="relative">
+              <select
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base bg-black text-white appearance-none"
+              >
+                <option value="" className="bg-black text-white">
+                  Select your gender
+                </option>
+                <option value="male" className="bg-black text-white">
+                  Male
+                </option>
+                <option value="female" className="bg-black text-white">
+                  Female
+                </option>
+                <option value="other" className="bg-black text-white">
+                  Other
+                </option>
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
               </div>
-            )}
+            </div>
+            {error.gender && <p className="text-red-600 text-xs mt-1">{error.gender}</p>}
 
-            {/* Gender Field */}
-            <select
-              name="gender"
-              value={formData.gender}
-              onChange={handleChange}
-              className="w-full p-3 bg-black rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-sm focus:outline-none text-xl text-white"
-            >
-              <option className="bg-black" value="">
-                Select your gender
-              </option>
-              <option className="bg-black" value="male">
-                Male
-              </option>
-              <option className="bg-black" value="female">
-                Female
-              </option>
-              <option className="bg-black" value="other">
-                Other
-              </option>
-            </select>
-            {error.gender && (
-              <div className="text-red-600 text-sm mt-1">{error.gender}</div>
-            )}
-
-            {/* Image Upload */}
-            <input
-              type="file"
-              name="image"
-              onChange={handleChange}
-              accept="image/*"
-              className="w-full p-3 bg-black rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-sm focus:outline-none text-xl text-white"
-            />
-            {error.image && (
-              <div className="text-red-600 text-sm mt-1">{error.image}</div>
-            )}
-
-            {/* Preview Image */}
-            {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="w-32 h-32 object-cover rounded-full mt-2"
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">
+                Profile Image
+              </label>
+              <input
+                type="file"
+                name="image"
+                onChange={handleChange}
+                accept="image/*"
+                className="w-full p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm"
               />
-            )}
+              {error.image && <p className="text-red-600 text-xs mt-1">{error.image}</p>}
+              {preview && (
+                <img
+                  src={preview}
+                  alt="Preview"
+                  className="mt-2 w-20 h-20 object-cover rounded-full"
+                />
+              )}
+            </div>
 
-            {/* Next Button */}
             <button
               onClick={handleNext}
-              className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+              disabled={loading}
+              className={`w-full py-2.5 rounded-lg font-medium text-white focus:outline-none transition duration-200 text-sm sm:text-base ${
+                loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
+              }`}
             >
-              Next
+              {loading ? "Processing..." : "Next"}
             </button>
-
-            {error.general && (
-              <div className="text-red-600 text-sm mt-1">{error.general}</div>
-            )}
           </>
         ) : (
-          <TutorRegister2  formDataStep1={formData} />
+          <TutorRegister2 formDataStep1={formData} />
         )}
       </div>
     </div>

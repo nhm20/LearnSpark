@@ -34,13 +34,12 @@ const SearchBar = ({ onSearch }) => {
       setRecommendations([]);
       return;
     }
-
     const fetchRecommendations = async () => {
       setLoading(true);
       setError(null);
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/user/search`,
+          `http://localhost:8000/api/units/search/results`,
           {
             params: { query: debouncedQuery },
           }
