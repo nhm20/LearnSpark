@@ -1,0 +1,1220 @@
+[
+  {
+    "name": "Reading Comprehension",
+    "classLevel": "Class 3",
+    "subject": "English",
+    "price": 120,
+    "timeLimit": 45
+  },
+  {
+    "name": "Grammar & Sentence Structure",
+    "classLevel": "Class 3",
+    "subject": "English",
+    "price": 150,
+    "timeLimit": 30
+  },
+  {
+    "name": "Vocabulary Building",
+    "classLevel": "Class 3",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 60
+  },
+  {
+    "name": "Story Writing",
+    "classLevel": "Class 3",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 50
+  },
+  {
+    "name": "Numbers & Place Value",
+    "classLevel": "Class 3",
+    "subject": "Mathematics",
+    "price": 110,
+    "timeLimit": 40
+  },
+  {
+    "name": "Addition & Subtraction",
+    "classLevel": "Class 3",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 35
+  },
+  {
+    "name": "Multiplication & Division",
+    "classLevel": "Class 3",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Fractions & Decimals",
+    "classLevel": "Class 3",
+    "subject": "Mathematics",
+    "price": 140,
+    "timeLimit": 25
+  },
+  {
+    "name": "Living and Non-Living Things",
+    "classLevel": "Class 3",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Animals & Their Habitats",
+    "classLevel": "Class 3",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 60
+  },
+  {
+    "name": "Human Body & Health",
+    "classLevel": "Class 3",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 50
+  },
+  {
+    "name": "Food & Nutrition",
+    "classLevel": "Class 3",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "My Family & Community",
+    "classLevel": "Class 3",
+    "subject": "Social Studies",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Maps & Directions",
+    "classLevel": "Class 3",
+    "subject": "Social Studies",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Indian Culture & Festivals",
+    "classLevel": "Class 3",
+    "subject": "Social Studies",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Our Country & Its States",
+    "classLevel": "Class 3",
+    "subject": "Social Studies",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Reading Skills",
+    "classLevel": "Class 4",
+    "subject": "English",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Parts of Speech",
+    "classLevel": "Class 4",
+    "subject": "English",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Creative Writing",
+    "classLevel": "Class 4",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Poetry & Prose",
+    "classLevel": "Class 4",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Large Numbers",
+    "classLevel": "Class 4",
+    "subject": "Mathematics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Factors & Multiples",
+    "classLevel": "Class 4",
+    "subject": "Mathematics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Fractions & Decimals",
+    "classLevel": "Class 4",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Time & Money",
+    "classLevel": "Class 4",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Plants & Photosynthesis",
+    "classLevel": "Class 4",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Food Chain & Ecosystem",
+    "classLevel": "Class 4",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Force, Work & Energy",
+    "classLevel": "Class 4",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Light & Sound",
+    "classLevel": "Class 4",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "History & Civilization",
+    "classLevel": "Class 4",
+    "subject": "Social Studies",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Geography & Climate",
+    "classLevel": "Class 4",
+    "subject": "Social Studies",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Indian Government",
+    "classLevel": "Class 4",
+    "subject": "Social Studies",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Rights & Duties",
+    "classLevel": "Class 4",
+    "subject": "Social Studies",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Advanced Reading",
+    "classLevel": "Class 5",
+    "subject": "English",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Grammar & Tenses",
+    "classLevel": "Class 5",
+    "subject": "English",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Descriptive Writing",
+    "classLevel": "Class 5",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Letter & Essay Writing",
+    "classLevel": "Class 5",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Operations with Large Numbers",
+    "classLevel": "Class 5",
+    "subject": "Mathematics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Fractions & Percentages",
+    "classLevel": "Class 5",
+    "subject": "Mathematics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Geometry & Symmetry",
+    "classLevel": "Class 5",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Data Handling",
+    "classLevel": "Class 5",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Cells & Human Body",
+    "classLevel": "Class 5",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Electricity & Magnetism",
+    "classLevel": "Class 5",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Heat & Energy",
+    "classLevel": "Class 5",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Weather & Climate",
+    "classLevel": "Class 5",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Indian History",
+    "classLevel": "Class 5",
+    "subject": "Social Studies",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "World Geography",
+    "classLevel": "Class 5",
+    "subject": "Social Studies",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Civics & Constitution",
+    "classLevel": "Class 5",
+    "subject": "Social Studies",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Economic Basics",
+    "classLevel": "Class 5",
+    "subject": "Social Studies",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Reading & Analysis",
+    "classLevel": "Class 6",
+    "subject": "English",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Grammar & Writing",
+    "classLevel": "Class 6",
+    "subject": "English",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Essay & Report Writing",
+    "classLevel": "Class 6",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Public Speaking",
+    "classLevel": "Class 6",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Algebra Basics",
+    "classLevel": "Class 6",
+    "subject": "Mathematics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Geometry & Mensuration",
+    "classLevel": "Class 6",
+    "subject": "Mathematics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Statistics & Probability",
+    "classLevel": "Class 6",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Linear Equations",
+    "classLevel": "Class 6",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Motion & Force",
+    "classLevel": "Class 6",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Atoms & Molecules",
+    "classLevel": "Class 6",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Cells & Tissues",
+    "classLevel": "Class 6",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Ecosystem",
+    "classLevel": "Class 6",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Ancient Civilizations",
+    "classLevel": "Class 6",
+    "subject": "Social Studies",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Indian Geography",
+    "classLevel": "Class 6",
+    "subject": "Social Studies",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Democracy & Government",
+    "classLevel": "Class 6",
+    "subject": "Social Studies",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Trade & Economy",
+    "classLevel": "Class 6",
+    "subject": "Social Studies",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Advanced Grammar",
+    "classLevel": "Class 7",
+    "subject": "English",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Comprehension & Writing",
+    "classLevel": "Class 7",
+    "subject": "English",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Poetry & Drama",
+    "classLevel": "Class 7",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Speech & Debate",
+    "classLevel": "Class 7",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Algebraic Expressions",
+    "classLevel": "Class 7",
+    "subject": "Mathematics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Lines & Angles",
+    "classLevel": "Class 7",
+    "subject": "Mathematics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Mensuration",
+    "classLevel": "Class 7",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Data Handling",
+    "classLevel": "Class 7",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Heat & Temperature",
+    "classLevel": "Class 7",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Acids & Bases",
+    "classLevel": "Class 7",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Respiration & Nutrition",
+    "classLevel": "Class 7",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Light & Sound",
+    "classLevel": "Class 7",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Medieval History",
+    "classLevel": "Class 7",
+    "subject": "Social Studies",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Physical & Political Geography",
+    "classLevel": "Class 7",
+    "subject": "Social Studies",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Indian Constitution",
+    "classLevel": "Class 7",
+    "subject": "Social Studies",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Economic Development",
+    "classLevel": "Class 7",
+    "subject": "Social Studies",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Critical Reading",
+    "classLevel": "Class 8",
+    "subject": "English",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Advanced Writing",
+    "classLevel": "Class 8",
+    "subject": "English",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Storytelling & Poetry",
+    "classLevel": "Class 8",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Communication Skills",
+    "classLevel": "Class 8",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Linear Equations",
+    "classLevel": "Class 8",
+    "subject": "Mathematics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Factorization",
+    "classLevel": "Class 8",
+    "subject": "Mathematics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Quadrilaterals & Polygons",
+    "classLevel": "Class 8",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Probability",
+    "classLevel": "Class 8",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Force & Pressure",
+    "classLevel": "Class 8",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Metals & Non-Metals",
+    "classLevel": "Class 8",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Reproduction & Heredity",
+    "classLevel": "Class 8",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Electricity & Magnetism",
+    "classLevel": "Class 8",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Modern History",
+    "classLevel": "Class 8",
+    "subject": "Social Studies",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Climate & Natural Disasters",
+    "classLevel": "Class 8",
+    "subject": "Social Studies",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Judiciary & Fundamental Rights",
+    "classLevel": "Class 8",
+    "subject": "Social Studies",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Globalization",
+    "classLevel": "Class 8",
+    "subject": "Social Studies",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Literature Analysis",
+    "classLevel": "Class 9",
+    "subject": "English",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Essay Writing",
+    "classLevel": "Class 9",
+    "subject": "English",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Public Speaking",
+    "classLevel": "Class 9",
+    "subject": "English",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Debate",
+    "classLevel": "Class 9",
+    "subject": "English",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Polynomials",
+    "classLevel": "Class 9",
+    "subject": "Mathematics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Triangles & Circles",
+    "classLevel": "Class 9",
+    "subject": "Mathematics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Trigonometry",
+    "classLevel": "Class 9",
+    "subject": "Mathematics",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Probability",
+    "classLevel": "Class 9",
+    "subject": "Mathematics",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Laws of Motion",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Gravitation",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Work, Energy & Power",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Atoms & Molecules",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Chemical Bonding",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Periodic Table",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Human Anatomy",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Microorganisms",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Environmental Biology",
+    "classLevel": "Class 9",
+    "subject": "Science",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "French Revolution",
+    "classLevel": "Class 9",
+    "subject": "Social Studies",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Drainage System of India",
+    "classLevel": "Class 9",
+    "subject": "Social Studies",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Indian Political Structure",
+    "classLevel": "Class 9",
+    "subject": "Social Studies",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Economic Growth",
+    "classLevel": "Class 9",
+    "subject": "Social Studies",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Shakespearean Literature",
+    "classLevel": "Class 10",
+    "subject": "English",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Descriptive & Narrative Writing",
+    "classLevel": "Class 10",
+    "subject": "English",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Oratory & Rhetoric",
+    "classLevel": "Class 10",
+    "subject": "English",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Quadratic Equations",
+    "classLevel": "Class 10",
+    "subject": "Mathematics",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Coordinate Geometry",
+    "classLevel": "Class 10",
+    "subject": "Mathematics",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Trigonometry",
+    "classLevel": "Class 10",
+    "subject": "Mathematics",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Statistics",
+    "classLevel": "Class 10",
+    "subject": "Mathematics",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Light & Optics",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Electricity",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Magnetic Effects",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Acids, Bases & Salts",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Organic Chemistry",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Metallurgy",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Genetics & Evolution",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Circulatory System",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Ecology",
+    "classLevel": "Class 10",
+    "subject": "Science",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "World Wars",
+    "classLevel": "Class 10",
+    "subject": "Social Studies",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Resource Distribution",
+    "classLevel": "Class 10",
+    "subject": "Social Studies",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Democracy & Political Science",
+    "classLevel": "Class 10",
+    "subject": "Social Studies",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Sustainable Development",
+    "classLevel": "Class 10",
+    "subject": "Social Studies",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Advanced Literature",
+    "classLevel": "Class 11",
+    "subject": "English",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Technical & Report Writing",
+    "classLevel": "Class 11",
+    "subject": "English",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Communication & Debate",
+    "classLevel": "Class 11",
+    "subject": "English",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Sets & Relations",
+    "classLevel": "Class 11",
+    "subject": "Mathematics",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Complex Numbers",
+    "classLevel": "Class 11",
+    "subject": "Mathematics",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Calculus",
+    "classLevel": "Class 11",
+    "subject": "Mathematics",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Vectors & 3D Geometry",
+    "classLevel": "Class 11",
+    "subject": "Mathematics",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Kinematics",
+    "classLevel": "Class 11",
+    "subject": "Physics",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Laws of Motion",
+    "classLevel": "Class 11",
+    "subject": "Physics",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Work, Power & Energy",
+    "classLevel": "Class 11",
+    "subject": "Physics",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Thermodynamics",
+    "classLevel": "Class 11",
+    "subject": "Physics",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Atomic Structure",
+    "classLevel": "Class 11",
+    "subject": "Chemistry",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Chemical Thermodynamics",
+    "classLevel": "Class 11",
+    "subject": "Chemistry",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Equilibrium",
+    "classLevel": "Class 11",
+    "subject": "Chemistry",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Organic Chemistry Basics",
+    "classLevel": "Class 11",
+    "subject": "Chemistry",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Diversity of Life",
+    "classLevel": "Class 11",
+    "subject": "Biology",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Human Physiology",
+    "classLevel": "Class 11",
+    "subject": "Biology",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Plant Biology",
+    "classLevel": "Class 11",
+    "subject": "Biology",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Genetics",
+    "classLevel": "Class 11",
+    "subject": "Biology",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Critical Essays",
+    "classLevel": "Class 12",
+    "subject": "English",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Advanced Poetry",
+    "classLevel": "Class 12",
+    "subject": "English",
+    "price": 95,
+    "timeLimit": 25
+  },
+  {
+    "name": "Formal & Informal Communication",
+    "classLevel": "Class 12",
+    "subject": "English",
+    "price": 135,
+    "timeLimit": 55
+  },
+  {
+    "name": "Differentiation & Integration",
+    "classLevel": "Class 12",
+    "subject": "Mathematics",
+    "price": 165,
+    "timeLimit": 45
+  },
+  {
+    "name": "Matrices & Determinants",
+    "classLevel": "Class 12",
+    "subject": "Mathematics",
+    "price": 140,
+    "timeLimit": 50
+  },
+  {
+    "name": "Probability & Statistics",
+    "classLevel": "Class 12",
+    "subject": "Mathematics",
+    "price": 110,
+    "timeLimit": 35
+  },
+  {
+    "name": "Electromagnetic Waves",
+    "classLevel": "Class 12",
+    "subject": "Physics",
+    "price": 180,
+    "timeLimit": 60
+  },
+  {
+    "name": "Dual Nature of Matter",
+    "classLevel": "Class 12",
+    "subject": "Physics",
+    "price": 90,
+    "timeLimit": 40
+  },
+  {
+    "name": "Nuclear Physics",
+    "classLevel": "Class 12",
+    "subject": "Physics",
+    "price": 120,
+    "timeLimit": 30
+  },
+  {
+    "name": "Semiconductors",
+    "classLevel": "Class 12",
+    "subject": "Physics",
+    "price": 150,
+    "timeLimit": 45
+  },
+  {
+    "name": "Solid State Chemistry",
+    "classLevel": "Class 12",
+    "subject": "Chemistry",
+    "price": 130,
+    "timeLimit": 25
+  },
+  {
+    "name": "Chemical Kinetics",
+    "classLevel": "Class 12",
+    "subject": "Chemistry",
+    "price": 160,
+    "timeLimit": 55
+  },
+  {
+    "name": "Coordination Compounds",
+    "classLevel": "Class 12",
+    "subject": "Chemistry",
+    "price": 170,
+    "timeLimit": 50
+  },
+  {
+    "name": "Advanced Organic Chemistry",
+    "classLevel": "Class 12",
+    "subject": "Chemistry",
+    "price": 100,
+    "timeLimit": 20
+  },
+  {
+    "name": "Reproduction & Development",
+    "classLevel": "Class 12",
+    "subject": "Biology",
+    "price": 190,
+    "timeLimit": 60
+  },
+  {
+    "name": "Biotechnology",
+    "classLevel": "Class 12",
+    "subject": "Biology",
+    "price": 80,
+    "timeLimit": 30
+  },
+  {
+    "name": "Human Health & Diseases",
+    "classLevel": "Class 12",
+    "subject": "Biology",
+    "price": 200,
+    "timeLimit": 40
+  },
+  {
+    "name": "Evolution",
+    "classLevel": "Class 12",
+    "subject": "Biology",
+    "price": 95,
+    "timeLimit": 25
+  }
+]
