@@ -27,7 +27,7 @@ const CoursesPage = () => {
     const fetchSearchResults = async () => {
       setLoading(true);
       try {
-        const endpoint = searchQuery ? "http://localhost:8000/api/units/search/results" : "http://localhost:8000/api/units";
+        const endpoint = searchQuery ? `${import.meta.env.VITE_APP_SERVER_URL}/api/units/search/results` : `${import.meta.env.VITE_APP_SERVER_URL}/api/units`;
         const params = {
           query: searchQuery,
           page,

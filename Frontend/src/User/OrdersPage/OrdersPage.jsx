@@ -11,7 +11,7 @@ const OrdersPage = () => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8000/api/orders?page=${page}&limit=10`);
+        const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_URL}/api/orders?page=${page}&limit=10`);
         setOrders((prevOrders) => [...prevOrders, ...response.data.orders]);
         setTotalPages(response.data.totalPages);
       } catch (error) {

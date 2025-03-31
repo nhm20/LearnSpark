@@ -95,82 +95,116 @@ const TutorRegister = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 sm:p-6">
-      <div className="space-y-3">
+    <div className="w-full max-w-xs mx-auto p-4 sm:max-w-sm">
+      <div className="space-y-2">
         {step === 1 ? (
           <>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
-            />
-            {error.name && <p className="text-red-600 text-xs mt-1">{error.name}</p>}
+            <h2 className="text-lg font-medium text-center mb-3">
+              Tutor Registration
+            </h2>
 
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
-            />
-            {error.email && <p className="text-red-600 text-xs mt-1">{error.email}</p>}
-
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
-            />
-            {error.password && <p className="text-red-600 text-xs mt-1">{error.password}</p>}
-
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              placeholder="Confirm your password"
-              className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base"
-            />
-            {error.confirmPassword && (
-              <p className="text-red-600 text-xs mt-1">{error.confirmPassword}</p>
-            )}
-
-            <div className="relative">
-              <select
-                name="gender"
-                value={formData.gender}
-                onChange={handleChange}
-                className="w-full p-2.5 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm sm:text-base bg-black text-white appearance-none"
-              >
-                <option value="" className="bg-black text-white">
-                  Select your gender
-                </option>
-                <option value="male" className="bg-black text-white">
-                  Male
-                </option>
-                <option value="female" className="bg-black text-white">
-                  Female
-                </option>
-                <option value="other" className="bg-black text-white">
-                  Other
-                </option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
-                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
-                </svg>
-              </div>
-            </div>
-            {error.gender && <p className="text-red-600 text-xs mt-1">{error.gender}</p>}
-
+            {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                className="w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 text-sm"
+              />
+              {error.name && (
+                <p className="text-red-500 text-xs mt-1">{error.name}</p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                className="w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 text-sm"
+              />
+              {error.email && (
+                <p className="text-red-500 text-xs mt-1">{error.email}</p>
+              )}
+            </div>
+
+            {/* Password */}
+            <div>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password"
+                className="w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 text-sm"
+              />
+              {error.password && (
+                <p className="text-red-500 text-xs mt-1">{error.password}</p>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm Password"
+                className="w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 text-sm"
+              />
+              {error.confirmPassword && (
+                <p className="text-red-500 text-xs mt-1">
+                  {error.confirmPassword}
+                </p>
+              )}
+            </div>
+
+            {/* Gender */}
+            <div>
+              <div className="relative">
+                <select
+                  name="gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                  className="w-full p-2 rounded border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 text-sm bg-black text-white appearance-none"
+                >
+                  <option value="" className="bg-black text-white">
+                    Select gender
+                  </option>
+                  <option value="male" className="bg-black text-white">
+                    Male
+                  </option>
+                  <option value="female" className="bg-black text-white">
+                    Female
+                  </option>
+                  <option value="other" className="bg-black text-white">
+                    Other
+                  </option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-300">
+                  <svg
+                    className="fill-current h-3 w-3"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                  </svg>
+                </div>
+              </div>
+              {error.gender && (
+                <p className="text-red-500 text-xs mt-1">{error.gender}</p>
+              )}
+            </div>
+
+            {/* Profile Image */}
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">
                 Profile Image
               </label>
               <input
@@ -178,26 +212,31 @@ const TutorRegister = () => {
                 name="image"
                 onChange={handleChange}
                 accept="image/*"
-                className="w-full p-2 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition duration-200 text-sm"
+                className="w-full text-xs file:mr-2 file:py-1 file:px-3 file:rounded file:border-0 file:text-xs file:font-medium file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
               />
-              {error.image && <p className="text-red-600 text-xs mt-1">{error.image}</p>}
+              {error.image && (
+                <p className="text-red-500 text-xs mt-1">{error.image}</p>
+              )}
               {preview && (
-                <img
-                  src={preview}
-                  alt="Preview"
-                  className="mt-2 w-20 h-20 object-cover rounded-full"
-                />
+                <div className="mt-2 flex justify-center">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="w-16 h-16 object-cover rounded-full border border-gray-200"
+                  />
+                </div>
               )}
             </div>
 
+            {/* Next Button */}
             <button
               onClick={handleNext}
               disabled={loading}
-              className={`w-full py-2.5 rounded-lg font-medium text-white focus:outline-none transition duration-200 text-sm sm:text-base ${
+              className={`w-full py-2 rounded font-medium text-white text-sm mt-2 ${
                 loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
-              {loading ? "Processing..." : "Next"}
+              {loading ? "Processing..." : "Continue"}
             </button>
           </>
         ) : (

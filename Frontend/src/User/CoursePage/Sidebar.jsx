@@ -1,0 +1,23 @@
+import React from "react";
+import PricingCard from "./PricingCard";
+import Details from "./Details";
+
+const Sidebar = ({ course, setError }) => {
+  return (
+    <>
+      <div className="w-full lg:w-1/3 p-8">
+        <div className="lg:sticky lg:top-8 space-y-6">
+          {/* Pricing Card */}
+          <PricingCard
+            course={course}
+            setError={setError}
+          />
+          {/* Course Details */}
+          <Details course={course} />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Sidebar;

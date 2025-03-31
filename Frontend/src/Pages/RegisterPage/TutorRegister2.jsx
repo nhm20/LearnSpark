@@ -62,7 +62,7 @@ const TutorRegister2 = ({ formDataStep1 }) => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/tutor/register",
+          `${import.meta.env.VITE_APP_SERVER_URL}/api/tutor/register`,
           finalFormData
         );
         if (response.data.success) {

@@ -28,7 +28,7 @@ const TutorLogin = () => {
     setError({ email: "", password: "", general: "" }); // Reset errors
 
     try {
-      const res = await axios.post("http://localhost:8000/api/tutor/login", {
+      const res = await axios.post(`${import.meta.env.VITE_APP_SERVER_URL}/api/tutor/login`, {
         email: formData.email,
         password: formData.password,
       });

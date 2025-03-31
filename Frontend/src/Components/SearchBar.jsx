@@ -39,7 +39,7 @@ const SearchBar = ({ onSearch }) => {
       setError(null);
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/units/search/results`,
+          `${import.meta.env.VITE_APP_SERVER_URL}/api/units/search/results`,
           {
             params: { query: debouncedQuery },
           }
@@ -121,9 +121,7 @@ const SearchBar = ({ onSearch }) => {
 
           {/* Error State */}
           {error && (
-            <div className="px-4 py-3 text-red-400 bg-red-900/20">
-              {error}
-            </div>
+            <div className="px-4 py-3 text-red-400 bg-red-900/20">{error}</div>
           )}
 
           {/* Recommendations */}

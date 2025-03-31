@@ -43,7 +43,7 @@ const ManageCourses = () => {
   const fetchClassNames = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/units/class-names"
+        `${import.meta.env.VITE_APP_SERVER_URL}/api/units/class-names`
       );
       if (response.data && response.data.length > 0) {
         console.log("Class Names:", response.data);
@@ -61,7 +61,7 @@ const ManageCourses = () => {
   const fetchSubjects = async (classLevel) => {
     try {
       const response = await axios.get(
-        "http://localhost:8000/api/units/subjects"
+         `${import.meta.env.VITE_APP_SERVER_URL}/api/units/subjects`
       );
       setSubjects(response.data);
     } catch (error) {
