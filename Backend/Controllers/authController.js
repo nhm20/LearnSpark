@@ -1,39 +1,52 @@
-import Admin from "../Models/adminModel.js";
+import admin from "../Config/fireBaseConfig.js";
+import { generateJWTtoken } from "../Helpers/authHelper.js";
+import User from "../Models/userModel.js";
 
-export const registerAdmin = async (req, res) => {
-  const { uid,name } = req.body;
-  console.log("Received data:", req.body); // Log the received data
+export const signUpController = async (req, res) => {
   try {
-    let admin = await Admin.findOne({ uid });
-    if (!admin) {
-      admin = new Admin({ uid, name });
-      await admin.save();
-      console.log("Admin saved:", admin); // Log the admin after saving
-      return res
-        .status(201)
-        .json({ message: "Admin registered successfully", admin });
-    } else {
-      return res.status(200).json({ message: "Admin already exists", admin });
+    const { idToken } = req.body;
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const { uid, email } = decodedToken;
+
+    let user = await User.findOne({ uid: uid });
+    if (user) {
+      return res.status(300).json({ error: "User already exists" });
     }
+    if (!user) {
+      user = new User({
+        uid: uid,
+        email,
+        name: decodedToken.name || email,
+        role: "user",
+      });
+      await user.save();
+      const token = generateJWTtoken(user);
+      res.status(200).json({ token, user: user });
+    }
+    
   } catch (error) {
-    console.error("Error registering admin:", error.message); // Log the error message
-    res
-      .status(500)
-      .json({ message: "Error registering admin", error: error.message });
+    console.error(error);
+    res.status(500).json({ error: "Failed to Sign up" });
   }
 };
 
 
-export const checkAdmin = async (req, res) => {
-  const { uid } = req.body;
+export const loginController = async (req, res) => {
   try {
-    const admin = await Admin.findOne({ uid });
-    if (admin) {
-      return res.status(200).json({ exists: true, admin });
-    } else {
-      return res.status(200).json({ exists: false });
+    const { idToken } = req.body;
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const { uid, email } = decodedToken;
+
+    let user = await User.findOne({ uid: uid });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found, please sign up." });
     }
-  } catch (error) {
-    res.status(500).json({ message: "Error checking admin", error: error.message });
+    const token = generateJWTtoken(user);
+    res.status(200).json({ token, user: user });
   }
-};
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to login" });
+  }
+}

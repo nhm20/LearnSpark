@@ -9,7 +9,6 @@ import orderRoutes from './Routes/orderRoutes.js';
 import cors from 'cors';
 dotenv.config();
 
-//database connection
 connectDB();
 
 const app = express();

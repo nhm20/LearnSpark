@@ -56,10 +56,7 @@ export const getAllUnits = async (req, res) => {
 export const getUnitById = async (req, res) => {
   try {
     const { id } = req.params;
-
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ message: "Invalid Unit ID format" });
-    }
+    console.log(req.body);
 
     const unit = await Unit.findById(id);
     if (!unit) {

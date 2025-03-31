@@ -1,73 +1,52 @@
 import dotenv from "dotenv";
-import braintree from "braintree";
-import Order from "../Models/orderModel.js";
+import Stripe from "stripe";
+
 dotenv.config();
 
-var gateway = new braintree.BraintreeGateway({
-  environment: braintree.Environment.Sandbox,
-  merchantId: process.env.BRAINTREE_MERCHANT_ID,
-  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
-  privateKey: process.env.BRAINTREE_PRIVATE_KEY,
-});
-
-export const braintreeTokenController = async (req, res) => {
+export const checkoutSessionController = async (req, res) => {
   try {
-    gateway.clientToken.generate({}, (err, response) => {
-      if (err) {
-        return res.status(500).json({ error: "Failed to generate client token" });
-      } else {
-        res.send(response);
+    const { course } = req.body;
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+    const lineItems = [
+      {
+        price_data: {
+          currency: "inr",
+          product_data: { name: course.name },
+          unit_amount: course.price * 100,
+        },
+        quantity: 1,
+      },
+    ];
+
+    // Create a checkout session (Stripe requires at least 30 mins)
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      expires_at: Math.floor(Date.now() / 1000) + 1800, // 30 min (Stripe minimum)
+      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLIENT_URL}/retry`,
+    });
+
+    // Simulate 2-minute expiration
+    setTimeout(async () => {
+      try {
+        const sessionDetails = await stripe.checkout.sessions.retrieve(
+          session.id
+        );
+        if (sessionDetails.status === "open") {
+          await stripe.checkout.sessions.expire(session.id);
+          console.log(`Session ${session.id} expired after 2 minutes.`);
+        }
+      } catch (error) {
+        console.error("Error expiring session:", error);
       }
-    });
+    }, 120000); // 2 minutes
+
+    res.status(200).json({ sessionId: session.id });
   } catch (error) {
-    res.status(500).json({ error: "Failed to generate client token" });
-  }
-};
-export const braintreePaymentController = async (req, res) => {
-  try {
-    const { cart, nonce } = req.body;
-    const totalAmount = cart.reduce((acc, item) => acc + item.price, 0);
-
-    // Validate input
-    if (!nonce || !cart || !Array.isArray(cart)) {
-      return res.status(400).json({ error: "Invalid payment data" });
-    }
-
-    const result = await gateway.transaction.sale({
-      amount: totalAmount.toFixed(2),
-      paymentMethodNonce: nonce,
-      options: {
-        submitForSettlement: true
-      }
-    });
-
-    if (result.success) {
-      const order = await new Order({
-        name: cart[0].name, // Taking first item's name
-        price: totalAmount,
-        payment: result,
-        paymentStatus: "completed"
-      }).save();
-
-      return res.json({ success: true, order });
-    } else {
-      await new Order({
-        name: cart[0].name,
-        price: totalAmount,
-        payment: result,
-        paymentStatus: "failed"
-      }).save();
-      
-      return res.status(400).json({ 
-        error: result.message || "Payment failed",
-        details: result
-      });
-    }
-  } catch (error) {
-    console.error("Payment error:", error);
-    return res.status(500).json({ 
-      error: error.message,
-      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    });
+    console.error("Error creating checkout session:", error);
+    res.status(500).json({ error: "Failed to create checkout session" });
   }
 };
