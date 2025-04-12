@@ -1,35 +1,38 @@
-import dotenv from 'dotenv';
-import express from 'express';
-import connectDB from './Config/database.js'
-import unitRoutes from './Routes/unitRoutes.js';
-import userRoutes from './Routes/userRoutes.js';
-import adminRoutes from './Routes/adminRoutes.js';
-import tutorRoutes from './Routes/tutorRoutes.js';
-import orderRoutes from './Routes/orderRoutes.js';
-import cors from 'cors';
-dotenv.config();
+import dotenv from "dotenv";
+import express from "express";
+import connectDB from "./Config/database.js";
+import unitRoutes from "./Routes/unitRoutes.js";
+import tutorRoutes from "./Routes/tutorRoutes.js";
+import orderRoutes from "./Routes/orderRoutes.js";
+import authRoutes from "./Routes/authRoutes.js";
+import cors from "cors";
 
+dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors({
-  origin: process.env.CLIENT_URL || "*", // Allow frontend URL
-  credentials: true,  // Allow cookies (if using sessions)
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
 
-
+// CORS and Middleware setup
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "*", // Allow frontend URL
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json());
 
-app.use('/api/admin', adminRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/tutor", tutorRoutes);
-app.use('/api/units', unitRoutes);
-app.use('/api/orders', orderRoutes);
+// Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/units", unitRoutes);
+app.use("/api/tutors", tutorRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/", (req, res) => {
+  res.json({ message: "Welcome to the backend API" });
+});
 
 const PORT = process.env.PORT || 8000;
-
 app.listen(PORT, () => {
- console.log(`Server Listening on ${PORT} on ${process.env.DEV_MODE} mode`)
-})
+  console.log(`Server listening on port ${PORT}`);
+});

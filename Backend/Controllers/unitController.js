@@ -6,8 +6,8 @@ import Tutor from "../Models/tutorModel.js";
 // Create a new unit
 export const createUnit = async (req, res) => {
   try {
-    const { name, classLevel, subject, price, timeLimit } = req.body;
-    const newUnit = new Unit({ name, classLevel, subject, price, timeLimit });
+    const { name, classLevel, image,subject, price, timeLimit } = req.body;
+    const newUnit = new Unit({ name,image, classLevel, subject, price, timeLimit });
     await newUnit.save();
     res.status(201).json(newUnit);
   } catch (error) {
@@ -79,7 +79,7 @@ export const updateUnit = async (req, res) => {
       return res.status(400).json({ message: "Invalid Unit ID format" });
     }
 
-    const { name, classLevel, subject, price, timeLimit } = req.body;
+    const { name, classLevel,image, subject, price, timeLimit } = req.body;
 
     // Ensure the unit exists before updating
     const existingUnit = await Unit.findById(id);
@@ -89,7 +89,7 @@ export const updateUnit = async (req, res) => {
 
     const updatedUnit = await Unit.findByIdAndUpdate(
       id,
-      { name, classLevel, subject, price, timeLimit },
+      { name, classLevel,image, subject, price, timeLimit },
       { new: true }
     );
 

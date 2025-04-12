@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import useAuth from "../Context/useAuth";
@@ -8,7 +8,7 @@ import { Menu, X, ShoppingCart } from "lucide-react";
 const Header = ({ onSearch, resetSearchQuery, cartItemCount }) => {
   const navigate = useNavigate();
   const { user, logOut } = useAuth();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLoginClick = async () => {
     if (user) {

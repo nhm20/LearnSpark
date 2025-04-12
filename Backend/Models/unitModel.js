@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const unitSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    image: { type: String, required: true },
     classLevel: {
       type: String,
       required: true,

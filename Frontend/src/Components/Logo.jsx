@@ -4,7 +4,7 @@ import React from "react";
 const Logo = () => {
   return (
     <div className="flex items-center gap-3">
-      <SchoolIcon className="text-blue-600" style={{ fontSize: 50 }} />
+      <SchoolIcon className="text-blue-800" style={{ fontSize: 50 }} />
       <p className="text-3xl md:text-5xl font-mono border-r-4 pr-2 whitespace-nowrap overflow-hidden animate-typing">
         LearnSpark
       </p>

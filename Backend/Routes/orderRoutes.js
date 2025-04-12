@@ -1,6 +1,6 @@
 import express from "express";
 import { checkoutSessionController } from "../Controllers/orderController.js";
-import { isAuthenticated, isAdmin } from "../Middlewares/authMiddlewares.js";
+// import { isAuthenticated, isAdmin } from "../Middlewares/authMiddlewares.js";
 
 const router = express.Router();
 // router.get("/", isAuthenticated, isAdmin, getAllOrders);

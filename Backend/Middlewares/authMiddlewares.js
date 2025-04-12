@@ -1,14 +1,13 @@
-import admin from "../Config/fireBaseConfig.js";
+import JWT from "jsonwebtoken";
+import User from "../Models/userModel.js";
+import Tutor from "../Models/tutorModel.js";
 
-const verifyToken = async (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    return res
-      .status(401)
-      .json({ message: "Authentication token is required" });
-  }
+export const requireSignIn = async (req, res, next) => {
   try {
-    const decodedToken = await admin.auth().verifyIdToken(token);
+    const decodedToken = JWT.verify(
+      req.headers.authorization,
+      process.env.JWT_SECRET
+    );
     req.user = decodedToken;
     next();
   } catch (error) {
@@ -16,24 +15,42 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
-// Middleware to check if user is an admin
 export const isAdmin = async (req, res, next) => {
-  if (!req.user || !req.user.email) {
-    return res.status(403).json({ message: "Unauthorized access" });
-  }
-
   try {
-    const user = await User.findOne({ uid: req.user.uid });
-
-    if (!user || user.role !== "admin") {
-      return res.status(403).json({ message: "Admin access required" });
+    const user = await User.findById(req.user._id);
+    if (user.role !== "admin") {
+      return res.status(401).send({
+        success: false,
+        message: "Unauthorized Access",
+      });
+    } else {
+      next();
     }
-
-    next();
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Internal server error", error: error.message });
+    console.log(error);
+    res.status(401).send({
+      success: false,
+      message: "Error checking admin ",
+    });
   }
 };
-export default verifyToken;
+
+export const isTutor = async (req, res, next) => {
+  try {
+    const user = await Tutor.findById(req.user._id);
+    if (user.role !== "tutor") {
+      return res.status(401).send({
+        success: false,
+        message: "Unauthorized Access",
+      });
+    } else {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(401).send({
+      success: false,
+      message: "Error checking tutor ",
+    });
+  }
+}

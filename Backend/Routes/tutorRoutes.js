@@ -1,12 +1,12 @@
 import express from "express";
-import { registerTutor,LoginTutor, checkEmailExists } from "../Controllers/tutorController.js";
-
+import { isTutor, requireSignIn } from "../Middlewares/authMiddlewares.js";
+import { updateTutorProfile } from "../Controllers/tutorController.js";
 const router = express.Router();
 
-router.post("/register", registerTutor);
-
-router.post("/login", LoginTutor);
-
-router.post("/exists", checkEmailExists);
+router.get("/tutor-auth", requireSignIn, isTutor, (req, res) => {
+  res.status(200).send({ message: "Admin Authenticated" });
+});
+router.put("/profile/:id", updateTutorProfile);
 
 export default router;
+

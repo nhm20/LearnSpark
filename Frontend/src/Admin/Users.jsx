@@ -1,8 +1,8 @@
-import React from "react";
-import AdminAnalytics from "./Analytics";
-import Sidebar from "./Components/Sidebar";
+import React from 'react'
+import ManageCourses from './ManageCourses';
+import Sidebar from './Components/Sidebar';
 
-const DashBoard = () => {
+const Users = () => {
   return (
     <div
       className="flex h-screen w-full overflow-hidden"
@@ -15,13 +15,12 @@ const DashBoard = () => {
         backgroundAttachment: "fixed",
       }}
     >
-      <Sidebar onTabChange={"dashboard"} />
+      <Sidebar onTabChange={"courses"} />
 
       <div className="flex-1 ml-48 overflow-y-auto text-white">
-        <AdminAnalytics />
+        <ManageCourses />
       </div>
     </div>
   );
 };
-
-export default DashBoard;
+export default Users
