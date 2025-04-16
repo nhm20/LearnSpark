@@ -13,7 +13,6 @@ const tutorSchema = new mongoose.Schema(
     accNo: { type: String },
     total: { type: Number, default: 0 },
     online: { type: Boolean, default: false },
-    rating: { type: Number, default: 0 },
     role: { type: String, default: "tutor" },
   },
   { timestamps: true }

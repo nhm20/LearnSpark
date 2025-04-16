@@ -1,5 +1,5 @@
 import express from "express";
-import { checkoutSessionController } from "../Controllers/orderController.js";
+import { checkoutSessionController, getOrdersByUserId, verifyPaymentController } from "../Controllers/orderController.js";
 // import { isAuthenticated, isAdmin } from "../Middlewares/authMiddlewares.js";
 
 const router = express.Router();
@@ -11,4 +11,8 @@ const router = express.Router();
 
 router.post("/create-checkout-session", checkoutSessionController);
 
+router.get("/verify-payment", verifyPaymentController);
+
+
+router.get('/:userId',getOrdersByUserId)
 export default router;

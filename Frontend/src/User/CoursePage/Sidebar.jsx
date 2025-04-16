@@ -7,12 +7,10 @@ const Sidebar = ({ course, setError }) => {
     <>
       <div className="w-full lg:w-1/3 p-8">
         <div className="lg:sticky lg:top-8 space-y-6">
-          {/* Pricing Card */}
           <PricingCard
             course={course}
             setError={setError}
           />
-          {/* Course Details */}
           <Details course={course} />
         </div>
       </div>

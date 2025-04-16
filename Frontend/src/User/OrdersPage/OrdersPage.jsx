@@ -1,61 +1,59 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import Header from "../../Components/Header";
+import OrdersTable from "./OrdersTable";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
+      setError(null);
       try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_URL}/api/orders?page=${page}&limit=10`);
-        setOrders((prevOrders) => [...prevOrders, ...response.data.orders]);
-        setTotalPages(response.data.totalPages);
-      } catch (error) {
-        console.error("Error fetching orders:", error);
+        const { data } = await axios.get(
+          `${import.meta.env.VITE_APP_SERVER_URL}/api/orders/${user._id}`
+        );
+
+        if (data.success) {
+          setOrders(data.data || []);
+        } else {
+          setError(new Error(data.error || "Failed to fetch orders"));
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    fetchOrders();
-  }, [page]);
-
-  const loadMoreOrders = () => {
-    if (page < totalPages) {
-      setPage((prevPage) => prevPage + 1);
+    if (user?._id) {
+      fetchOrders();
     }
-  };
+  }, [user?._id]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Orders</h1>
+    <>
+      <Header />
+      <div className="min-h-screen pt-16 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#04012e] to-black">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10 text-center sm:text-left">
+            <h1 className="text-4xl font-semibold text-white">Order History</h1>
+            <p className="mt-2 text-base text-gray-400">
+              View all your purchased courses and sessions
+            </p>
+          </div>
 
-      {orders.length === 0 && !loading && <p>No orders found.</p>}
-
-      <ul>
-        {orders.map((order, index) => (
-          <li key={index} className="border p-4 mb-4">
-            <p><strong>User:</strong> {order.user?.name} ({order.user?.email})</p>
-            <p><strong>Tutor:</strong> {order.tutor?.name || "N/A"}</p>
-          </li>
-        ))}
-      </ul>
-
-      {loading && <p>Loading...</p>}
-
-      {!loading && page < totalPages && (
-        <div className="text-center py-4">
-          <button onClick={loadMoreOrders} className="px-6 py-2 bg-blue-500 text-white rounded">
-            Load More
-          </button>
+          <div className="bg-black border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
+            <OrdersTable orders={orders} loading={loading} error={error} />
+          </div>
         </div>
-      )}
-
-      {!loading && page >= totalPages && <p className="text-center py-4">No more orders.</p>}
-    </div>
+      </div>
+    </>
   );
 };
 

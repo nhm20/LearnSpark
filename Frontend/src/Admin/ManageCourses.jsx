@@ -13,6 +13,7 @@ const ManageCourses = () => {
     subject: "",
     price: 0,
     timeLimit: 0,
+    image: "",
   });
   const [editUnitId, setEditUnitId] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -22,17 +23,23 @@ const ManageCourses = () => {
     direction: "ascending",
   });
   const [showForm, setShowForm] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [totalUnits, setTotalUnits] = useState(0);
 
-  const fetchUnits = async () => {
+  const fetchUnits = async (page = 1) => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_APP_SERVER_URL}/api/units`
+        `${
+          import.meta.env.VITE_APP_SERVER_URL
+        }/api/units?page=${page}&limit=${itemsPerPage}`
       );
       const unitsData = Array.isArray(res.data.units) ? res.data.units : [];
       setUnits(unitsData);
       setFilteredUnits(unitsData);
+      setTotalUnits(res.data.pagination?.totalUnits || 0);
     } catch (err) {
-      console.error("Error fetching units:", err);
+      return;
     }
   };
 
@@ -64,23 +71,22 @@ const ManageCourses = () => {
   const saveUnit = async (data) => {
     try {
       setSaving(true);
-      console.log("Saving unit:", data);
       if (editUnitId) {
-        let res = await axios.put(
+        await axios.put(
           `${import.meta.env.VITE_APP_SERVER_URL}/api/units/${editUnitId}`,
           data
         );
-        console.log(res.data);
       } else {
         await axios.post(
           `${import.meta.env.VITE_APP_SERVER_URL}/api/units`,
           data
         );
       }
-      await fetchUnits();
+
+      await fetchUnits(currentPage);
       setShowForm(false);
     } catch (error) {
-      console.error("Error saving unit:", error);
+      return;
     } finally {
       setSaving(false);
     }
@@ -96,7 +102,7 @@ const ManageCourses = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        await fetchUnits();
+        await fetchUnits(currentPage);
       } catch (error) {
         console.error("Error loading data:", error);
       } finally {
@@ -104,7 +110,7 @@ const ManageCourses = () => {
       }
     };
     loadData();
-  }, []);
+  }, [currentPage]);
 
   const handleRowClick = (unit) => {
     setFormData(unit);
@@ -113,18 +119,21 @@ const ManageCourses = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this unit?")) return;
     try {
       await deleteUnit(id);
-      await fetchUnits();
+      if (filteredUnits.length === 1 && currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      } else {
+        await fetchUnits(currentPage);
+      }
     } catch (error) {
-      console.error("Error deleting unit:", error);
+      return;
     }
   };
 
   const handleSearch = (query) => {
     if (!query) {
-      setFilteredUnits(sortUnits(units));
+      fetchUnits(currentPage);
       return;
     }
     const filtered = units.filter(
@@ -162,10 +171,16 @@ const ManageCourses = () => {
       subject: "",
       price: 0,
       timeLimit: 0,
+      image: "",
     });
     setEditUnitId(null);
     setShowForm(true);
   };
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-black">
@@ -175,8 +190,8 @@ const ManageCourses = () => {
   }
 
   return (
-    <div className="min-h-screen  p-6">
-      <div className="max-w-6xl mx-auto   bg-black p-6">
+    <div className="min-h-screen pt-5">
+      <div className="max-w-6xl mx-auto bg-black p-6">
         <h2 className="text-2xl font-medium mb-4 text-white">Manage Courses</h2>
 
         <FilterBar
@@ -204,7 +219,12 @@ const ManageCourses = () => {
           units={filteredUnits}
           onRowClick={handleRowClick}
           onDelete={handleDelete}
-          sortConfig={sortConfig}
+          currentPage={currentPage}
+          totalPages={Math.ceil(totalUnits / itemsPerPage)}
+          onPageChange={handlePageChange}
+          totalItems={totalUnits}
+          itemsPerPage={itemsPerPage}
+          loading={loading}
         />
       </div>
     </div>

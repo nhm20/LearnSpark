@@ -1,25 +1,34 @@
-import SchoolIcon from "@mui/icons-material/School";
+import { IoSparklesSharp } from "react-icons/io5";
 import React from "react";
 
 const Logo = () => {
   return (
     <div className="flex items-center gap-3">
-      <SchoolIcon className="text-blue-800" style={{ fontSize: 50 }} />
-      <p className="text-3xl md:text-5xl font-mono border-r-4 pr-2 whitespace-nowrap overflow-hidden animate-typing">
+      <IoSparklesSharp
+        style={{
+          fontSize: 50,
+          color: "#FFA500", // Vibrant orange
+          filter: "drop-shadow(0 0 4px rgba(255, 165, 0, 0.7))",
+        }}
+      />
+      <p className="text-3xl md:text-5xl font-Montserrat font-normal  pr-2 whitespace-nowrap overflow-hidden animate-typing text-blue-800">
         LearnSpark
       </p>
       <style>
         {`
-          @keyframes cursor {
-            50% { border-color: transparent; }
-          }
           @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+            from { 
+              width: 0; 
+              border-right: 4px solid #00f; // Yellow cursor
+            }
+            to { 
+              width: 100%;
+              border-right: 4px solid transparent;
+            }
           }
           .animate-typing {
             display: inline-block;
-            animation: typing 3s steps(10, end) forwards, cursor 0.4s step-end infinite alternate;
+            animation: typing 3s steps(10, end) forwards;
           }
         `}
       </style>

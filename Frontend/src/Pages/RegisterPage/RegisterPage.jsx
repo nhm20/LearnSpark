@@ -19,7 +19,7 @@ const RegisterPage = () => {
             "linear-gradient(rgba(10, 10, 10, 0) 0%, rgb(12, 1, 77) 40%, rgb(4, 0, 107) 60%, rgba(26, 85, 201, 0) 100%)",
         }}
       >
-        <div className="border border-white-800 p-4 rounded-lg shadow-lg w-full max-w-sm bg-black bg-opacity-90">
+        <div className="p-4 rounded-lg shadow-lg w-full max-w-sm bg-black bg-opacity-90">
           <div className="flex justify-center">
             <UserRegister isTutor={isTutorSignup} />
           </div>

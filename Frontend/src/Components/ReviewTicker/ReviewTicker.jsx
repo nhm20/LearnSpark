@@ -3,11 +3,11 @@ import React, { useRef, useEffect } from "react";
 import "./ReviewTicker.css";
 
 // Import profile images
-import profile1 from './assets/profile1.png';
-import profile2 from './assets/profile2.png';
-import profile3 from './assets/profile3.png';
-import profile4 from './assets/profile4.png';
-import profile5 from './assets/profile5.png';
+import profile1 from "./assets/profile1.png";
+import profile2 from "./assets/profile2.png";
+import profile3 from "./assets/profile3.png";
+import profile4 from "./assets/profile4.png";
+import profile5 from "./assets/profile5.png";
 
 const ReviewTicker = () => {
   const testimonials = [
@@ -17,7 +17,7 @@ const ReviewTicker = () => {
       role: "Mathematics Student",
       text: "LearnLink transformed how I understand calculus. My mentor broke down complex concepts into simple, digestible lessons.",
       rating: 5,
-      photo: profile1
+      photo: profile1,
     },
     {
       id: 2,
@@ -25,7 +25,7 @@ const ReviewTicker = () => {
       role: "Biology Student",
       text: "The interactive classes helped me ace my exams. The 1-on-1 attention made all the difference!",
       rating: 5,
-      photo: profile2
+      photo: profile2,
     },
     {
       id: 3,
@@ -33,7 +33,7 @@ const ReviewTicker = () => {
       role: "English Student",
       text: "My writing improved dramatically after just a few sessions. The personalized feedback was invaluable.",
       rating: 4,
-      photo: profile3
+      photo: profile3,
     },
     {
       id: 4,
@@ -41,7 +41,7 @@ const ReviewTicker = () => {
       role: "Computer Science Student",
       text: "The course selection is impressive and the mentors are truly experts in their fields.",
       rating: 5,
-      photo: profile4
+      photo: profile4,
     },
     {
       id: 5,
@@ -49,8 +49,8 @@ const ReviewTicker = () => {
       role: "Chemistry Student",
       text: "I was struggling with organic chemistry until I found the perfect mentor on LearnLink.",
       rating: 5,
-      photo: profile5
-    }
+      photo: profile5,
+    },
   ];
 
   const trackRef = useRef(null);
@@ -60,11 +60,11 @@ const ReviewTicker = () => {
     if (!track) return;
 
     const clonedTestimonials = [...testimonials, ...testimonials];
-    track.innerHTML = '';
-    
+    track.innerHTML = "";
+
     clonedTestimonials.forEach((testimonial) => {
-      const reviewCard = document.createElement('div');
-      reviewCard.className = 'review-card';
+      const reviewCard = document.createElement("div");
+      reviewCard.className = "review-card";
       reviewCard.innerHTML = `
         <div class="review-content">
           <div class="review-header">
@@ -74,7 +74,7 @@ const ReviewTicker = () => {
             <div class="reviewer-meta">
               <h4 class="reviewer-name">${testimonial.name}</h4>
               <p class="reviewer-role">${testimonial.role}</p>
-              <div class="stars">${'★'.repeat(testimonial.rating)}</div>
+              <div class="stars">${"★".repeat(testimonial.rating)}</div>
             </div>
           </div>
           <p class="review-text">"${testimonial.text}"</p>
@@ -100,13 +100,13 @@ const ReviewTicker = () => {
     animationFrame = requestAnimationFrame(animate);
 
     const container = track.parentElement;
-    container.addEventListener('mouseenter', () => speed = 0);
-    container.addEventListener('mouseleave', () => speed = 1);
+    container.addEventListener("mouseenter", () => (speed = 0));
+    container.addEventListener("mouseleave", () => (speed = 1));
 
     return () => {
       cancelAnimationFrame(animationFrame);
-      container.removeEventListener('mouseenter', () => speed = 0);
-      container.removeEventListener('mouseleave', () => speed = 1);
+      container.removeEventListener("mouseenter", () => (speed = 0));
+      container.removeEventListener("mouseleave", () => (speed = 1));
     };
   }, [testimonials]);
 

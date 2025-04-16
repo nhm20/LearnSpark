@@ -13,7 +13,6 @@ import {
   Users,
 } from "lucide-react";
 
-// Animated number component
 const AnimatedNumber = ({ value }) => {
   const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef(null);
@@ -48,17 +47,15 @@ const AnimatedNumber = ({ value }) => {
     if (isPercentage) {
       numericValue = parseFloat(value.replace("%", ""));
     } else if (isTimeValue) {
-      // Handle time values like "4m 32s"
       const [minutes, seconds] = value
         .split(" ")
         .map((part) => parseFloat(part.replace(/[^\d.]/g, "")));
       numericValue = minutes * 60 + seconds;
     } else {
-      // Handle comma-separated numbers like "1,248"
       numericValue = parseFloat(value.replace(/,/g, ""));
     }
 
-    const duration = 1500; // Animation duration in ms
+    const duration = 1500;
     const startTime = performance.now();
     const startValue = 0;
 
@@ -69,7 +66,6 @@ const AnimatedNumber = ({ value }) => {
 
       let currentDisplayValue;
       if (isTimeValue) {
-        // For time values, animate the total seconds then convert back to minutes:seconds
         currentDisplayValue =
           startValue + (numericValue - startValue) * easedProgress;
         const minutes = Math.floor(currentDisplayValue / 60);
@@ -307,7 +303,7 @@ const StatCard = ({ stat }) => {
 
 const Analytics = () => {
   return (
-    <main className="min-h-screen w-full text-white p-4 sm:p-8">
+    <main className="min-h-screen w-full text-white p-4 mt-6 sm:p-8">
       <div className="max-w-7xl mx-auto">
         <header className="mb-10">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

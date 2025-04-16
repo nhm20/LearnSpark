@@ -1,6 +1,6 @@
-import React from 'react'
-import Sidebar from './Components/Sidebar';
-import ManageCourses from './ManageCourses';
+import React from "react";
+import Sidebar from "./Components/Sidebar";
+import ManageOrders from "./ManageOrders";
 
 const Orders = () => {
   return (
@@ -15,13 +15,13 @@ const Orders = () => {
         backgroundAttachment: "fixed",
       }}
     >
-      <Sidebar onTabChange={"courses"} />
+      <Sidebar onTabChange={"orders"} />
 
-      <div className="flex-1 ml-48 overflow-y-auto text-white">
-        <ManageCourses />
+      <div className="flex-1 overflow-y-auto text-white md:ml-64 transition-all duration-300">
+        <ManageOrders />
       </div>
     </div>
   );
 };
 
-export default Orders
+export default Orders;

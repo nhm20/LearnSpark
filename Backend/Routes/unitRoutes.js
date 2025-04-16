@@ -13,16 +13,16 @@ import {
 
 const router = express.Router();
 
-router.post("/", createUnit); 
-router.get("/", getAllUnits); 
-router.get("/class-names", getClassNames); 
-router.get("/subjects", getSubjects); 
-router.get("/:id", getUnitById); 
-router.put("/:id", updateUnit); 
+router.post("/", createUnit);
+router.get("/", getAllUnits);
+router.get("/class-names", getClassNames);
+router.get("/subjects", getSubjects);
+router.get("/:id", getUnitById);
+router.put("/:id", updateUnit);
 router.delete("/:id", deleteUnit);
 
 router.get("/:id/similar", getSimilarUnits);
 
-router.get("/search/results", searchResults); 
+router.get("/search/results", searchResults);
 
 export default router;

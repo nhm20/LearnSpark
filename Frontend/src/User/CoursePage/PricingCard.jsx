@@ -9,17 +9,46 @@ const PricingCard = ({ course }) => {
   const user = useSelector((state) => state.user);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
+  const [orderDetails, setOrderDetails] = useState(null);
   const navigate = useNavigate();
 
-  // Check for canceled payment on component mount
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
+    const sessionId = query.get("session_id");
+    const orderId = query.get("order_id");
+
     if (query.get("canceled") === "true") {
       setError("Payment was canceled. You can try again.");
-      // Clean up the URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
+
+    if (sessionId && orderId) {
+      verifyPayment(sessionId, orderId);
+    }
   }, []);
+
+  const verifyPayment = async (sessionId, orderId) => {
+    try {
+      setIsProcessing(true);
+      const { data } = await axios.get(
+        `http://localhost:8000/api/orders/verify-payment?session_id=${sessionId}&order_id=${orderId}`
+      );
+
+      if (data.success) {
+        setSuccess(true);
+        setOrderDetails(data.order);
+        // Redirect to success page or show success message
+        navigate(`/success?order_id=${orderId}`);
+      } else {
+        setError("Payment verification failed. Please contact support.");
+      }
+    } catch (error) {
+      setError("Error verifying payment. Please check your order history.");
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   const makePayment = async () => {
     if (!course) {
@@ -27,56 +56,48 @@ const PricingCard = ({ course }) => {
       return;
     }
 
-    // Reset previous error state
     setError(null);
     setIsProcessing(true);
 
     try {
       const stripe = await loadStripe(
-        `${import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY}`
+        import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY
       );
-
       const { data } = await axios.post(
         "http://localhost:8000/api/orders/create-checkout-session",
-        { course },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${user.token}`, // Assuming you have user token
-          },
-        }
+        { course: course, user: user }
       );
 
-      if (!data?.sessionId) {
-        throw new Error("No session ID returned from server");
-      }
+      if (data?.success) {
+        const result = await stripe.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
 
-      const result = await stripe.redirectToCheckout({
-        sessionId: data.sessionId,
-      });
-
-      if (result.error) {
-        throw new Error(result.error.message);
+        if (result.error) {
+          setError(result.error.message);
+        }
+      } else {
+        setError(data.message || "Failed to create payment session");
       }
     } catch (error) {
-      console.error("Payment failed:", error);
-      setError(error.message || "Payment failed. Please try again.");
+      if (error.response) {
+        setError(error.response.data.message || "Payment failed");
+      } else {
+        setError("Network error. Please try again.");
+      }
+      console.error("Payment error:", error);
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <div
-      className="border border-gray-800/50 rounded-xl overflow-hidden shadow-lg w-full"
-      style={{
-        background: "rgba(1, 6, 38, 0.5)",
-      }}
-    >
+    <div className="border border-gray-800/50 rounded-xl overflow-hidden shadow-lg w-full bg-[rgba(1,6,38,0.5)]">
       <div className="p-6">
-        <h3 className="text-xl font-bold text-white mb-4">Enroll in Course</h3>
+        <h3 className="text-xl font-medium text-white mb-4">
+          Enroll in Course
+        </h3>
 
-        {/* Error Display */}
         {error && (
           <div className="mb-4 p-3 bg-red-900/20 border border-red-700 text-red-300 rounded-lg flex items-start gap-2">
             <X className="flex-shrink-0 h-5 w-5 mt-0.5" />
@@ -92,9 +113,28 @@ const PricingCard = ({ course }) => {
           </div>
         )}
 
+        {success && (
+          <div className="mb-4 p-3 bg-green-900/20 border border-green-700 text-green-300 rounded-lg flex items-start gap-2">
+            <Check className="flex-shrink-0 h-5 w-5 mt-0.5" />
+            <div className="flex-1">
+              Payment successful! Your Zoom meeting is ready.
+              {orderDetails?.zoomLink && (
+                <a
+                  href={orderDetails.zoomLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block mt-2 text-white underline"
+                >
+                  Join Zoom Meeting
+                </a>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="flex items-end gap-2 mb-6">
-          <div className="text-3xl font-bold text-white">
-            {course.price ? `$${course.price.toFixed(2)}` : "Free"}
+          <div className="text-3xl font-medium font-Poppins text-white">
+            {course.price ? `₹ ${course.price.toFixed(2)}` : "Free"}
           </div>
           {course.originalPrice && (
             <div className="text-lg text-gray-400 line-through">
@@ -114,18 +154,22 @@ const PricingCard = ({ course }) => {
           ) : (
             <button
               onClick={makePayment}
-              disabled={isProcessing}
+              disabled={isProcessing || success}
               className={`w-full ${
                 isProcessing || error
                   ? "bg-gray-600"
-                  : "bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700"
-              } text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg`}
+                  : success
+                  ? "bg-green-600"
+                  : "bg-gradient-to-r from-blue-900 to-blue-600 hover:from-blue-700 hover:to-indigo-700"
+              } text-white font-medium font-Montserrat py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-[1.02] shadow-lg`}
             >
               {isProcessing ? (
                 <div className="flex items-center justify-center">
                   <Loader2 className="animate-spin h-5 w-5 mr-2" />
                   Processing...
                 </div>
+              ) : success ? (
+                "Payment Successful"
               ) : error ? (
                 "Try Again"
               ) : (
@@ -134,9 +178,6 @@ const PricingCard = ({ course }) => {
             </button>
           )}
         </div>
-        <div className="mt-6 text-sm text-gray-400">
-          <div>30-Day Money-Back Guarantee</div>
-        </div>
       </div>
 
       <div className="border-t border-gray-800/50 p-6">
@@ -144,23 +185,15 @@ const PricingCard = ({ course }) => {
         <ul className="space-y-3">
           <li className="flex items-center gap-3 text-gray-300">
             <Check className="w-5 h-5 text-green-500" />
-            <div>12 hours on-demand video</div>
+            <div>Live Zoom sessions with tutor</div>
           </li>
           <li className="flex items-center gap-3 text-gray-300">
             <Check className="w-5 h-5 text-green-500" />
-            <div>35 downloadable resources</div>
-          </li>
-          <li className="flex items-center gap-3 text-gray-300">
-            <Check className="w-5 h-5 text-green-500" />
-            <div>Full lifetime access</div>
+            <div>Downloadable resources</div>
           </li>
           <li className="flex items-center gap-3 text-gray-300">
             <Check className="w-5 h-5 text-green-500" />
             <div>Certificate of completion</div>
-          </li>
-          <li className="flex items-center gap-3 text-gray-300">
-            <Check className="w-5 h-5 text-green-500" />
-            <div>Access on mobile and TV</div>
           </li>
         </ul>
       </div>

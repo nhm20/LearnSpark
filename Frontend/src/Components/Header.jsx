@@ -5,10 +5,11 @@ import useAuth from "../Context/useAuth";
 import Logo from "./Logo";
 import { Menu, X, ShoppingCart } from "lucide-react";
 
-const Header = ({ onSearch, resetSearchQuery, cartItemCount }) => {
+const Header = () => {
   const navigate = useNavigate();
   const { user, logOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCartAnimating, setIsCartAnimating] = useState(false);
 
   const handleLoginClick = async () => {
     if (user) {
@@ -24,16 +25,13 @@ const Header = ({ onSearch, resetSearchQuery, cartItemCount }) => {
     setIsMobileMenuOpen(false);
   };
 
-  const handleCoursesClick = () => {
-    if (resetSearchQuery) {
-      resetSearchQuery();
-    }
-    navigate("/courses");
-    setIsMobileMenuOpen(false);
-  };
-
   const handleCartClick = () => {
-    navigate("/orders");
+    // Trigger enhanced animation
+    setIsCartAnimating(true);
+    setTimeout(() => {
+      setIsCartAnimating(false);
+      navigate("/orders");
+    }, 500); // Slightly longer animation duration
     setIsMobileMenuOpen(false);
   };
 
@@ -43,14 +41,13 @@ const Header = ({ onSearch, resetSearchQuery, cartItemCount }) => {
   };
 
   return (
-    <header className="bg-black text-white px-4 py-3 shadow-lg sticky top-0 z-50 ">
+    <header className="bg-black text-white px-4 py-3 shadow-lg sticky top-0 z-50">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        {/* Logo and mobile menu button - unchanged */}
         <div className="w-full flex justify-between items-center md:w-auto">
           <Link to="/" className="flex items-center gap-2">
             <Logo />
           </Link>
-          
-          {/* Mobile menu button */}
           <button
             className="md:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-800 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -60,68 +57,70 @@ const Header = ({ onSearch, resetSearchQuery, cartItemCount }) => {
           </button>
         </div>
 
-        {/* Search bar - moves to top on mobile when menu is open */}
-        <div className={`w-full md:flex-1 md:mx-8 max-w-2xl ${isMobileMenuOpen ? 'order-first mt-4' : ''}`}>
-          <SearchBar onSearch={onSearch} />
+        {/* Search bar - unchanged */}
+        <div
+          className={`w-full md:flex-1 md:mx-8 max-w-2xl ${
+            isMobileMenuOpen ? "order-first mt-4" : ""
+          }`}
+        >
+          <SearchBar />
         </div>
 
-        {/* Desktop navigation */}
+        {/* Desktop navigation - only cart button changed */}
         <nav className="hidden md:flex gap-4 lg:gap-6 items-center">
-          {user && (
-            <Link
-              to="/profile"
-              className="px-4 py-2 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition duration-300 whitespace-nowrap"
-            >
-              {user.displayName || "Profile"}
-            </Link>
-          )}
+          
           <button
             onClick={handleCartClick}
-            className="px-4 py-2 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition duration-300 flex items-center gap-1 whitespace-nowrap relative"
+            className="px-4 py-2 text-lg font-medium text-gray-300 hover:text-white rounded-lg transition duration-300 flex items-center gap-1 relative"
+            aria-label="Cart"
           >
-            <ShoppingCart size={20} />
-            {cartItemCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                {cartItemCount}
-              </span>
-            )}
+            <ShoppingCart
+              size={20}
+              className={`transition-all duration-500 ${
+                isCartAnimating
+                  ? "animate-[bounce_0.5s_ease-in-out_2] text-blue-400 scale-110"
+                  : "text-blue-300 hover:text-blue-400"
+              }`}
+            />
           </button>
           <button
             onClick={handleLoginClick}
-            className="px-6 py-2 text-lg font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition duration-300 whitespace-nowrap"
-            aria-label={user ? "Logout" : "Login"}
+            className="px-6 py-2 text-lg font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg transition duration-300 whitespace-nowrap"
           >
             {user ? "Logout" : "Login"}
           </button>
         </nav>
 
-        {/* Mobile navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden w-full bg-gray-900 rounded-lg mt-2 p-4 border border-gray-800">
-            <nav className="flex flex-col gap-3">
+          <div className="md:hidden w-full bg-black rounded-lg mt-2 p-4 border border-gray-900">
+            <nav className="flex flex-col gap-3 items-center">
+              {" "}
+              {/* Added items-center here */}
               {user && (
                 <button
                   onClick={handleProfileClick}
-                  className="px-4 py-3 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition duration-300 text-left flex items-center gap-3"
+                  className="px-4 py-3 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition duration-300 w-full text-center"
                 >
-                  {user.displayName || "Profile"}
+                  {"Profile"}
                 </button>
               )}
               <button
                 onClick={handleCartClick}
-                className="px-4 py-3 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition duration-300 flex items-center gap-3 text-left relative"
+                className="px-4 py-3 text-lg font-medium text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition duration-300 flex items-center gap-3 justify-center w-full"
               >
-                <ShoppingCart size={20} />
-                <span>Cart</span>
-                {cartItemCount > 0 && (
-                  <span className="ml-auto bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                    {cartItemCount}
-                  </span>
-                )}
+                <ShoppingCart
+                  size={20}
+                  className={`transition-all duration-300 ${
+                    isCartAnimating
+                      ? "animate-bounce text-blue-400"
+                      : "text-blue-300 hover:text-blue-400"
+                  }`}
+                />
+                <p>Cart</p>
               </button>
               <button
                 onClick={handleLoginClick}
-                className="px-6 py-3 text-lg font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition duration-300 text-center"
+                className="px-6 py-3 text-lg font-medium text-white bg-blue-700 hover:bg-blue-800 rounded-lg transition duration-300 w-full text-center"
               >
                 {user ? "Logout" : "Login"}
               </button>

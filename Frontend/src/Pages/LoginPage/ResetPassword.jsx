@@ -46,12 +46,12 @@ const ResetPassword = () => {
             "linear-gradient(rgba(10, 10, 10, 0) 0%, rgb(12, 1, 77) 40%, rgb(4, 0, 107) 60%, rgba(26, 85, 201, 0) 100%)",
         }}
       >
-        <div className="border border-gray-800 p-4 sm:p-6 rounded-lg shadow-xl text-center w-11/12 sm:w-8/12 md:w-6/12 lg:w-4/12 bg-black bg-opacity-90">
+        <div className="p-4 sm:p-6 rounded-lg shadow-xl text-center w-11/12 sm:w-8/12 md:w-6/12 lg:w-4/12 bg-black bg-opacity-90">
           <h1 className="text-xl sm:text-2xl font-normal mb-4 text-gray-100 font-roboto">
             Reset Password
           </h1>
 
-          <form onSubmit={handleReset} className="space-y-4">
+          <form onSubmit={handleReset} className="space-y-4 px-3">
             <input
               type="password"
               placeholder="Enter new password"

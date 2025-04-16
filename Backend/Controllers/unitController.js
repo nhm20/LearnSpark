@@ -6,8 +6,15 @@ import Tutor from "../Models/tutorModel.js";
 // Create a new unit
 export const createUnit = async (req, res) => {
   try {
-    const { name, classLevel, image,subject, price, timeLimit } = req.body;
-    const newUnit = new Unit({ name,image, classLevel, subject, price, timeLimit });
+    const { name, classLevel, image, subject, price, timeLimit } = req.body;
+    const newUnit = new Unit({
+      name,
+      image,
+      classLevel,
+      subject,
+      price,
+      timeLimit,
+    });
     await newUnit.save();
     res.status(201).json(newUnit);
   } catch (error) {
@@ -79,7 +86,7 @@ export const updateUnit = async (req, res) => {
       return res.status(400).json({ message: "Invalid Unit ID format" });
     }
 
-    const { name, classLevel,image, subject, price, timeLimit } = req.body;
+    const { name, classLevel, image, subject, price, timeLimit } = req.body;
 
     // Ensure the unit exists before updating
     const existingUnit = await Unit.findById(id);
@@ -89,7 +96,7 @@ export const updateUnit = async (req, res) => {
 
     const updatedUnit = await Unit.findByIdAndUpdate(
       id,
-      { name, classLevel,image, subject, price, timeLimit },
+      { name, classLevel, image, subject, price, timeLimit },
       { new: true }
     );
 
@@ -157,7 +164,6 @@ export const getSubjects = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch subjects" });
   }
 };
-
 export const getSimilarUnits = async (req, res) => {
   try {
     const { id } = req.params;
@@ -172,16 +178,11 @@ export const getSimilarUnits = async (req, res) => {
     }
 
     const similarUnits = await Unit.find({
-      $and: [
-        { subject: unit.subject },
-        { classLevel: unit.classLevel },
-        { _id: { $ne: unit._id } },
-      ],
-    });
-
-    if (!similarUnits.length) {
-      return res.status(404).json({ message: "No similar units found" });
-    }
+      _id: { $ne: unit._id },
+      $or: [{ subject: unit.subject }, { classLevel: unit.classLevel }],
+    })
+      .limit(6)
+      .lean();
 
     res.status(200).json(similarUnits);
   } catch (error) {
@@ -191,6 +192,7 @@ export const getSimilarUnits = async (req, res) => {
       .json({ message: "Internal Server Error", error: error.message });
   }
 };
+
 
 export const searchResults = async (req, res) => {
   const { query } = req.query; // Get the search query from the request

@@ -10,8 +10,6 @@ export const signUpController = async (req, res) => {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const { uid, email } = decodedToken;
 
-    console.log("Decoded Token:", decodedToken);
-
     let existing = null;
 
     if (role === "user") existing = await User.findOne({ uid });
@@ -22,21 +20,21 @@ export const signUpController = async (req, res) => {
         .status(400)
         .json({ message: "User already exists", error: error.message });
     }
-    {
-      console.log("Decoded Token:", decodedToken);
-    }
     let newUser;
+    console.log("Creating new user:", { uid, email, name, role });
     if (role === "user") {
       newUser = await User.create({ uid, email, name, role });
     } else if (role === "tutor") {
       newUser = await Tutor.create({ uid, email, name, role });
     }
+    console.log("New user created:", newUser);
+
     const token = generateJWTtoken(newUser._id, role);
 
     res.status(201).json({
       success: true,
       token,
-      user: newUser
+      user: newUser,
     });
   } catch (error) {
     res.status(500).json({ message: "Signup failed", error: error.message });
@@ -64,7 +62,7 @@ export const loginController = async (req, res) => {
     res.status(200).json({
       success: true,
       token,
-      user: user
+      user: user,
     });
   } catch (error) {
     console.error("Login error:", error.message);
@@ -73,5 +71,3 @@ export const loginController = async (req, res) => {
     });
   }
 };
-
-

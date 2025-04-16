@@ -1,4 +1,3 @@
-// src/components/ForgotPassword.jsx
 import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../Context/FireBaseConfig";
@@ -46,8 +45,8 @@ const ForgotPassword = ({ onBack }) => {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
-        {message && <p className="text-sm text-green-600">{message}</p>}
+        {error && <p className="text-sm text-blue-300">{error}</p>}
+        {message && <p className="text-sm text-green-500">{message}</p>}
 
         <button
           type="submit"
@@ -57,15 +56,15 @@ const ForgotPassword = ({ onBack }) => {
           {loading ? "Sending..." : "Send Reset Link"}
         </button>
 
-        <p className="text-sm text-center text-gray-600 mt-2">
-          Remembered your password?{" "}
-          <span
+        <div className="text-sm text-center text-gray-500 mt-2">
+          <button
+            type="button"
             onClick={onBack}
-            className="text-blue-600 cursor-pointer hover:underline"
+            className="text-blue-500 hover:underline font-medium"
           >
             Go back to Login
-          </span>
-        </p>
+          </button>
+        </div>
       </form>
     </div>
   );

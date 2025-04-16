@@ -4,7 +4,7 @@ const CourseTabs = ({ activeTab, setActiveTab }) => {
   return <>
   <div className="border-b border-gray-800/50 mb-8 w-full">
     <nav className="flex space-x-8 w-full">
-      {["overview", "curriculum", "instructor", "reviews"].map((tab) => (
+      {["overview", "curriculum"].map((tab) => (
         <button
           key={tab}
           onClick={() => setActiveTab(tab)}

@@ -1,6 +1,6 @@
 import React from 'react'
-import ManageCourses from './ManageCourses';
 import Sidebar from './Components/Sidebar';
+import ManageTutors from './ManageTutors';
 
 const Tutors = () => {
   return (
@@ -15,10 +15,10 @@ const Tutors = () => {
         backgroundAttachment: "fixed",
       }}
     >
-      <Sidebar onTabChange={"courses"} />
+      <Sidebar onTabChange={"tutors"} />
 
-      <div className="flex-1 ml-48 overflow-y-auto text-white">
-        <ManageCourses />
+      <div className="flex-1 overflow-y-auto text-white md:ml-64 transition-all duration-300">
+        <ManageTutors />
       </div>
     </div>
   );

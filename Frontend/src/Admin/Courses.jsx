@@ -17,7 +17,7 @@ const Courses = () => {
     >
       <Sidebar onTabChange={"courses"} />
 
-      <div className="flex-1 ml-48 overflow-y-auto text-white">
+      <div className="flex-1 overflow-y-auto text-white md:ml-64 transition-all duration-300">
         <ManageCourses />
       </div>
     </div>

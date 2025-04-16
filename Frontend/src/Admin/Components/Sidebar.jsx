@@ -23,7 +23,7 @@ const Sidebar = () => {
       try {
         await logOut();
       } catch (error) {
-        console.error("Error during logout:", error);
+        return;
       }
     }
     setIsMobileMenuOpen(false);
@@ -59,9 +59,8 @@ const Sidebar = () => {
 
   return (
     <>
-      {/* Mobile Toggle Button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md text-white hover:bg-gray-800 transition-colors shadow-lg"
+        className="md:hidden fixed top-4  left-4 z-50 p-2 rounded-4xl text-white hover:bg-gray-900 transition-colors shadow-lg"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle menu"
       >
@@ -72,26 +71,22 @@ const Sidebar = () => {
         )}
       </button>
 
-      {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-48 text-white transition-transform duration-300 ease-in-out transform ${
+        className={`fixed  inset-y-0 left-0 z-40 w-48 text-white transition-transform duration-300 ease-in-out transform ${
           isMobileMenuOpen
             ? "translate-x-0 shadow-xl"
             : "-translate-x-full md:translate-x-0"
         }`}
         aria-label="Sidebar"
       >
-        <div className="flex flex-col h-full justify-between py-8 px-4 relative">
-          {/* Vertical border line */}
+        <div className="flex  flex-col h-full justify-between py-8 px-4 relative">
           <div className="absolute top-8 bottom-8 right-0 w-px bg-gray-700" />
 
-          <div className="space-y-8">
-            {/* Logo */}
+          <div className="space-y-8  pt-6">
             <div className="mb-2">
               <h1 className="text-2xl text-center text-white">LearnSpark</h1>
             </div>
 
-            {/* Profile */}
             <div className="flex flex-col items-center text-center space-y-2">
               <img
                 src="https://i.pravatar.cc/100"
@@ -102,7 +97,6 @@ const Sidebar = () => {
               <p className="text-xs text-gray-400">Admin</p>
             </div>
 
-            {/* Navigation */}
             <nav className="space-y-2">
               {navItems.map((item) => (
                 <NavLink
@@ -124,7 +118,6 @@ const Sidebar = () => {
             </nav>
           </div>
 
-          {/* Bottom Controls */}
           <div className="mt-8 mb-4">
             <button
               onClick={handleLoginClick}
@@ -141,7 +134,6 @@ const Sidebar = () => {
         </div>
       </aside>
 
-      {/* Overlay for mobile */}
       {isMobileMenuOpen && (
         <div
           className="fixed inset-0 z-30 bg-black bg-opacity-50 md:hidden"

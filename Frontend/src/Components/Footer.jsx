@@ -1,5 +1,15 @@
 import React from "react";
-import { Mail, Facebook, Twitter, Instagram, Linkedin, BookOpen, Users, Award, Clock } from "lucide-react";
+import {
+  Mail,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  BookOpen,
+  Users,
+  Award,
+  Clock,
+} from "lucide-react";
 
 const Footer = () => {
   return (
@@ -41,7 +51,9 @@ const Footer = () => {
 
           {/* Quick Links - 1 column on mobile */}
           <div className="col-span-1">
-            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Quick Links</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              Quick Links
+            </h3>
             <ul className="space-y-2 sm:space-y-3">
               {["Home", "Courses", "Mentors", "Pricing"].map((item, index) => (
                 <li key={index}>
@@ -59,7 +71,9 @@ const Footer = () => {
 
           {/* Resources - 1 column on mobile */}
           <div className="col-span-1">
-            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Resources</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              Resources
+            </h3>
             <ul className="space-y-2 sm:space-y-3">
               {["Blog", "Help Center", "Tutorials", "Webinars"].map(
                 (item, index) => (
@@ -79,22 +93,24 @@ const Footer = () => {
 
           {/* For Teachers - Full width on mobile, then normal */}
           <div className="col-span-2 mt-4 sm:mt-0 sm:col-span-1">
-            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">For Teachers</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              For Teachers
+            </h3>
             <ul className="space-y-2 sm:space-y-3">
               {[
                 { text: "Become Instructor", icon: BookOpen },
                 { text: "Community", icon: Users },
                 { text: "Certification", icon: Award },
-                { text: "Flexible Hours", icon: Clock }
+                { text: "Flexible Hours", icon: Clock },
               ].map((item, index) => (
                 <li key={index}>
                   <a
                     href="#"
                     className="flex items-center text-gray-400 hover:text-white transition duration-300 group text-sm sm:text-base"
                   >
-                    <item.icon 
-                      size={16} 
-                      className="mr-2 sm:mr-3 text-blue-400 group-hover:text-blue-300 transition-all group-hover:scale-110" 
+                    <item.icon
+                      size={16}
+                      className="mr-2 sm:mr-3 text-blue-400 group-hover:text-blue-300 transition-all group-hover:scale-110"
                     />
                     {item.text}
                   </a>
@@ -105,7 +121,9 @@ const Footer = () => {
 
           {/* Newsletter - Full width on mobile, then spans 2 columns */}
           <div className="col-span-2 mt-6 md:mt-0 md:col-span-4 lg:col-span-1">
-            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Newsletter</h3>
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">
+              Newsletter
+            </h3>
             <p className="text-gray-300 text-xs sm:text-sm mb-4 sm:mb-5">
               Subscribe for updates on courses and features.
             </p>
@@ -137,17 +155,15 @@ const Footer = () => {
             © {new Date().getFullYear()} LearnSpark. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center gap-x-3 gap-y-1 sm:gap-x-4">
-            {["Privacy Policy", "Terms", "Cookies"].map(
-              (item, index) => (
-                <a
-                  key={index}
-                  href="#"
-                  className="text-gray-200 hover:text-blue-400 z-10 text-xs sm:text-sm transition hover:underline hover:underline-offset-4 decoration-blue-400"
-                >
-                  {item}
-                </a>
-              )
-            )}
+            {["Privacy Policy", "Terms", "Cookies"].map((item, index) => (
+              <a
+                key={index}
+                href="#"
+                className="text-gray-200 hover:text-blue-400 z-10 text-xs sm:text-sm transition hover:underline hover:underline-offset-4 decoration-blue-400"
+              >
+                {item}
+              </a>
+            ))}
           </div>
         </div>
       </div>

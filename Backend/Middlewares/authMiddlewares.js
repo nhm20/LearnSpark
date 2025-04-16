@@ -53,4 +53,4 @@ export const isTutor = async (req, res, next) => {
       message: "Error checking tutor ",
     });
   }
-}
+};

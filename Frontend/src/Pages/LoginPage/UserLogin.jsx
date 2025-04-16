@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { auth } from "../../Context/FireBaseConfig";
+import { auth } from "../../Context/FireBaseConfig.jsx";
 import GoogleIcon from "@mui/icons-material/Google";
 
 import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
-  sendPasswordResetEmail,
 } from "firebase/auth";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -20,7 +19,6 @@ const UserLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState({ general: "" });
   const [loading, setLoading] = useState({ login: false, google: false });
-  const [resetEmail, setResetEmail] = useState("");
   const [resetError, setResetError] = useState("");
   const [showReset, setShowReset] = useState(false);
 
@@ -87,10 +85,8 @@ const UserLogin = () => {
         return;
       }
 
-      // Dispatch before navigation
       dispatch(setUser({ ...data.user, token: data.token }));
 
-      // Immediate navigation after successful dispatch
       if (data.user.role === "admin") {
         navigate("/admin/dashboard", { replace: true });
       } else {
@@ -121,10 +117,8 @@ const UserLogin = () => {
         return;
       }
 
-      // Dispatch before navigation
       dispatch(setUser({ ...data.user, token: data.token }));
 
-      // Immediate navigation after successful dispatch
       if (data.user.role === "admin") {
         navigate("/admin/dashboard", { replace: true });
       } else if (data.user.role === "tutor") {
@@ -139,23 +133,9 @@ const UserLogin = () => {
     }
   };
 
-  const handleResetPassword = async () => {
-    if (!resetEmail) {
-      setResetError("Enter your email.");
-      return;
-    }
-    try {
-      await sendPasswordResetEmail(auth, resetEmail);
-      setResetError("Reset link sent.");
-    } catch (err) {
-      setResetError(handleFirebaseError(err));
-    }
-  };
-
   if (showReset) {
     return <ForgotPassword onBack={() => setShowReset(false)} />;
   }
-
   return (
     <div className="w-full max-w-md mx-auto p-4">
       <form onSubmit={handleLogin} className="space-y-4">
@@ -190,36 +170,32 @@ const UserLogin = () => {
           className={`w-full p-3 rounded-lg font-medium text-white transition-colors ${
             loading.login
               ? "bg-blue-400 cursor-not-allowed"
-              : "bg-blue-600 hover:bg-blue-700"
+              : "bg-[#1207e8] hover:bg-blue-700"
           }`}
         >
-          {loading.login ? (
-            <LoadingSpinner text="Logging in..." />
-          ) : (
-            "Login with Email"
-          )}
+          {loading.login ? <LoadingSpinner text="Logging in..." /> : "Login"}
         </button>
 
         <button
           onClick={handleGoogleLogin}
           disabled={loading.google}
-          className={`w-full p-3 rounded-lg font-medium text-white flex items-center justify-center ${
+          className={`w-full p-3 rounded-lg font-medium text-gray-700  flex items-center justify-center ${
             loading.google
-              ? "bg-red-400 cursor-not-allowed"
-              : "bg-red-600 hover:bg-red-700"
+              ? "bg-blue-400 cursor-not-allowed"
+              : "bg-white hover:bg-blue-800 hover:text-white"
           }`}
         >
           {loading.google ? (
             <LoadingSpinner text="Signing in..." />
           ) : (
             <>
-              <GoogleIcon className="w-5 h-5 mr-2" style={{ color: "white" }} />
+              <GoogleIcon className="w-5 h-5 mr-2" />
               Continue with Google
             </>
           )}
         </button>
         <p className="text-sm text-center text-gray-600 mt-2">
-          Forgot your password?{" "}
+          Forgot your password?{"   "}
           <strong
             onClick={() => setShowReset(true)}
             className="text-blue-600 cursor-pointer hover:underline"

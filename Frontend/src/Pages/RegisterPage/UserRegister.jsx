@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth } from "../../Context/FireBaseConfig";
+import { auth } from "../../Context/FireBaseConfig.jsx";
 import { Google, Mail } from "@mui/icons-material";
 import {
   createUserWithEmailAndPassword,
@@ -63,7 +63,6 @@ const UserRegister = ({ isTutor = false }) => {
       if (error.response?.data?.error === "User already exists") {
         return { error: "User already exists" };
       }
-      console.log("Backend registration error:", error);
       return { error: "Backend registration failed" };
     }
   };
@@ -77,7 +76,6 @@ const UserRegister = ({ isTutor = false }) => {
         role: isTutor ? "tutor" : "user",
         idToken: idToken,
       };
-
       const backendResponse = await registerUserToBackend(backendUser);
 
       if (backendResponse?.error) {
@@ -88,7 +86,6 @@ const UserRegister = ({ isTutor = false }) => {
 
       return backendResponse;
     } catch (error) {
-      console.error("Error completing signup:", error);
       if (firebaseUser) {
         await firebaseUser.delete().catch(console.error);
       }
@@ -119,7 +116,6 @@ const UserRegister = ({ isTutor = false }) => {
       setErrors({ general: "Password should be at least 6 characters." });
       return;
     }
-
     if (formData.password !== formData.confirmPassword) {
       setErrors({ general: "Passwords do not match." });
       return;
@@ -139,7 +135,6 @@ const UserRegister = ({ isTutor = false }) => {
       if (!backendResponse) {
         return;
       }
-
       dispatch(
         setUser({ ...backendResponse.user, token: backendResponse.token })
       );
@@ -162,7 +157,6 @@ const UserRegister = ({ isTutor = false }) => {
       if (!backendResponse) {
         return;
       }
-
       dispatch(
         setUser({ ...backendResponse.user, token: backendResponse.token })
       );
@@ -182,11 +176,10 @@ const UserRegister = ({ isTutor = false }) => {
         </h2>
         <p className="text-gray-300 mt-2">
           {isTutor
-            ? "Join our platform and share your knowledge"
+            ? "Join and earn with your knowledge"
             : "Get started with your learning journey"}
         </p>
       </div>
-
       {showEmailForm ? (
         <form onSubmit={handleEmailRegistration} className="space-y-4">
           <div className="grid gap-4">
@@ -244,14 +237,14 @@ const UserRegister = ({ isTutor = false }) => {
             disabled={loading.email}
             className={`w-full p-3 rounded-lg font-medium text-white transition-colors ${
               loading.email
-                ? "bg-blue-400 cursor-not-allowed"
+                ? "bg-blue-900 cursor-not-allowed"
                 : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {loading.email ? (
               <LoadingSpinner text="Registering..." />
             ) : (
-              `Sign Up as ${isTutor ? "Tutor" : "User"}`
+              `Sign Up`
             )}
           </button>
 
@@ -260,7 +253,7 @@ const UserRegister = ({ isTutor = false }) => {
             onClick={() => setShowEmailForm(false)}
             className="w-full p-3 rounded-lg font-medium text-gray-700 bg-gray-200 hover:bg-gray-300"
           >
-            Back to sign up options
+            Go Back
           </button>
         </form>
       ) : (
@@ -270,8 +263,8 @@ const UserRegister = ({ isTutor = false }) => {
             disabled={loading.google}
             className={`w-full p-3 rounded-lg font-medium text-white flex items-center justify-center ${
               loading.google
-                ? "bg-red-400 cursor-not-allowed"
-                : "bg-red-600 hover:bg-red-700"
+                ? "bg-blue-00 cursor-not-allowed"
+                : "bg-[#1207e8] hover:bg-blue-800"
             }`}
           >
             {loading.google ? (
@@ -279,7 +272,7 @@ const UserRegister = ({ isTutor = false }) => {
             ) : (
               <>
                 <Google className="w-5 h-5 mr-2" style={{ color: "white" }} />
-                Continue with Google
+                Sign Up with Google
               </>
             )}
           </button>
@@ -289,7 +282,7 @@ const UserRegister = ({ isTutor = false }) => {
             className="w-full p-3 rounded-lg font-medium text-gray-700 bg-white hover:bg-gray-100 flex items-center justify-center"
           >
             <Mail className="w-5 h-5 mr-2" />
-            Continue with email
+            Sign Up
           </button>
 
           <div className="text-center text-sm text-gray-400 mt-6">

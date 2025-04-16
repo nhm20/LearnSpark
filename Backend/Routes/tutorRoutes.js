@@ -1,6 +1,9 @@
 import express from "express";
 import { isTutor, requireSignIn } from "../Middlewares/authMiddlewares.js";
-import { updateTutorProfile } from "../Controllers/tutorController.js";
+import {
+  updateOnlineStatus,
+  updateTutorProfile,
+} from "../Controllers/tutorController.js";
 const router = express.Router();
 
 router.get("/tutor-auth", requireSignIn, isTutor, (req, res) => {
@@ -8,5 +11,6 @@ router.get("/tutor-auth", requireSignIn, isTutor, (req, res) => {
 });
 router.put("/profile/:id", updateTutorProfile);
 
-export default router;
+router.put("/online-status/:id", updateOnlineStatus);
 
+export default router;

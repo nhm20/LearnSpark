@@ -1,43 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import UsersTable from "./Components/UsersTable";
 
 const ManageUsers = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_APP_SERVER_URL}/api/users`
+      );
+
+      const usersData = Array.isArray(res.data.users)
+        ? res.data.users
+        : Array.isArray(res.data)
+        ? res.data
+        : [];
+
+      setUsers(usersData);
+    } catch (err) {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        await fetchUsers();
+      } catch (error) {
+        return;
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <span className="text-white ml-4">Loading users...</span>
+      </div>
+    );
+  }
+
   return (
-    <div className="p-6 bg-gray-900 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-4 text-white">Users</h2>
-
-      {/* List of Users */}
-      <div className="space-y-4">
-        {/* Example User */}
-        <div className="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-300">John Doe</h3>
-            <p className="text-sm text-gray-400">johndoe@example.com</p>
-          </div>
-          <div className="flex gap-2">
-            <button className="bg-blue-600 text-white py-1 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300">
-              Edit
-            </button>
-            <button className="bg-red-600 text-white py-1 px-4 rounded-md hover:bg-red-700 transition-colors duration-300">
-              Delete
-            </button>
-          </div>
-        </div>
-
-        {/* Add more users dynamically here */}
-        <div className="flex justify-between items-center p-4 bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-300">Jane Smith</h3>
-            <p className="text-sm text-gray-400">janesmith@example.com</p>
-          </div>
-          <div className="flex gap-2">
-            <button className="bg-blue-600 text-white py-1 px-4 rounded-md hover:bg-blue-700 transition-colors duration-300">
-              Edit
-            </button>
-            <button className="bg-red-600 text-white py-1 px-4 rounded-md hover:bg-red-700 transition-colors duration-300">
-              Delete
-            </button>
-          </div>
-        </div>
+    <div className="min-h-screen pt-5">
+      <div className="max-w-6xl mx-auto bg-black p-6">
+        <h2 className="text-2xl font-medium mb-4 text-white">Manage Users</h2>
+        <div className="text-white mb-4">Total Users: {users.length}</div>
+        <UsersTable users={users} />
       </div>
     </div>
   );

@@ -10,12 +10,11 @@ import {
   REGISTER,
 } from "redux-persist/es/constants";
 
+// ------------------ User Slice ------------------
 const userState = {
   user: null,
   isAuthenticated: false,
 };
-
-const transactions = [];
 
 const userSlice = createSlice({
   name: "user",
@@ -30,12 +29,18 @@ const userSlice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
     },
+    updateOnline: (state, action) => {
+      if (state.user) {
+        state.user.online = action.payload;
+      }
+    },
   },
 });
 
+// ------------------ Transaction Slice ------------------
 const transactionSlice = createSlice({
   name: "transactions",
-  initialState: transactions,
+  initialState: [],
   reducers: {
     addTransaction(state, action) {
       state.push(action.payload);
@@ -43,19 +48,19 @@ const transactionSlice = createSlice({
   },
 });
 
-// Persist Configuration for User Slice
+// ------------------ Persist Config ------------------
 const userPersistConfig = {
   key: "user",
   storage,
 };
 
-// Creating Persisted Reducer
+// Persisted reducer for user
 const persistedUserReducer = persistReducer(
   userPersistConfig,
   userSlice.reducer
 );
 
-// Configure Store with Middleware Fix
+// ------------------ Store Configuration ------------------
 const store = configureStore({
   reducer: {
     user: persistedUserReducer,
@@ -64,13 +69,14 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], // Ignores Persist Actions
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
 });
 
 export const persistor = persistStore(store);
 
+// ------------------ Exports ------------------
 export default store;
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser, updateOnline } = userSlice.actions;
 export const { addTransaction } = transactionSlice.actions;

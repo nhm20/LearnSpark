@@ -45,7 +45,6 @@ const FilterBar = ({ onSearch, onSortChange, sortConfig, onAddNew }) => {
   };
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 p-4 rounded-xlshadow-sm mb-1">
-      {/* Sort Buttons */}
       <div className="flex flex-wrap items-center gap-3 w-full md:w-auto">
         {filters.map(({ label, key }) => (
           <button
@@ -65,8 +64,6 @@ const FilterBar = ({ onSearch, onSortChange, sortConfig, onAddNew }) => {
           </button>
         ))}
       </div>
-
-      {/* Search Input and Add Button */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full md:w-auto">
         <div className="relative w-full sm:w-auto">
           <Search className="absolute left-4 top-1/2 h-4 w-4 text-blue-300 transform -translate-y-1/2" />

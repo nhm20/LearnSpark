@@ -13,6 +13,7 @@ body{
 @theme{
   --font-Montserrat:'Montserrat', sans-serif;
   --font-OpenSans:'OpenSans', sans-serif;
+  --font-Poppins:'Poppins', sans-serif;
 }
 /* Custom select dropdown styling */
 select {

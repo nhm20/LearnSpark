@@ -8,7 +8,7 @@ import Reviews from "./Reviews";
 const Homepage = () => {
   return (
     <>
-      <div className="h-screen"> {/* h-screen = height: 100vh */}
+      <div className="h-screen">
         <Header />
         <LandingPosts />
       </div>
