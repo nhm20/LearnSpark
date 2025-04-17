@@ -89,6 +89,8 @@ const UserLogin = () => {
 
       if (data.user.role === "admin") {
         navigate("/admin/dashboard", { replace: true });
+      } else if (data.user.role === "tutor") {
+        navigate("/tutor/dashboard", { replace: true });
       } else {
         navigate("/", { replace: true });
       }

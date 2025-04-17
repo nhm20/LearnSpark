@@ -13,7 +13,6 @@ export const generateJWTtoken = (id,role) => {
     );
     return token;
   } catch (error) {
-    console.error({ message: "JWT generation error" });
     return null;
   }
 };

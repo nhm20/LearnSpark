@@ -61,7 +61,6 @@ const Profile = () => {
   };
 
   const handleImageChange = async (e) => {
-    console.log("Image change event triggered");
     const file = e.target.files[0];
     if (!file) return;
 
@@ -89,7 +88,6 @@ const Profile = () => {
         }));
         setPreview(response.data.secure_url);
       } catch (err) {
-        console.error("Error uploading image:", err);
         setError((prev) => ({ ...prev, image: "Image upload failed" }));
       } finally {
         setImageUploading(false);
@@ -111,7 +109,6 @@ const Profile = () => {
       !formData.image ||
       !formData.accNo
     ) {
-      console.error("Please fill all required fields");
       return;
     }
     try {
@@ -123,13 +120,12 @@ const Profile = () => {
           degree: Number(formData.degree),
         }
       );
-      console.log("Response:", response.data);
 
       if (response.data.success) {
-        console.log("Profile updated successfully!");
+        return;
       }
     } catch (err) {
-      console.error("Update error:", err.message);
+      return;
     } finally {
       setIsSubmitting(false);
     }

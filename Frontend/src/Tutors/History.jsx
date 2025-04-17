@@ -1,41 +1,23 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-const TeachingHistory = ({ tutorId }) => {
-  const [history, setHistory] = useState([]);
-
-  useEffect(() => {
-    const fetchHistory = async () => {
-      try {
-        const response = await axios.get(`/api/teachingHistory/${tutorId}`);
-        setHistory(response.data.history);
-      } catch (error) {
-        console.error("Error fetching history:", error);
-      }
-    };
-
-    fetchHistory();
-  }, [tutorId]);
-
+import React from "react";
+import Sidebar from "./Components/Sidebar";
+import HistoryPage from './HistoryPage'
+const TeachingHistory = () => {
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-semibold">Teaching History</h2>
-      <div className="mt-4">
-        {history.length > 0 ? (
-          history.map((record) => (
-            <div
-              key={record._id}
-              className="p-4 bg-gray-50 rounded-lg shadow-sm mb-2"
-            >
-              <h3 className="text-lg font-medium">{record.unit}</h3>
-              <p className="text-sm text-gray-500">
-                Date: {new Date(record.date).toLocaleString()}
-              </p>
-            </div>
-          ))
-        ) : (
-          <p>No teaching history available.</p>
-        )}
+    <div
+      className="flex h-screen w-full overflow-hidden"
+      style={{
+        background: `
+        radial-gradient(ellipse at 20% 20%, rgba(12, 1, 77, 0.3) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 80%, rgba(12, 1, 77, 0.2) 0%, transparent 40%),
+        linear-gradient(to bottom, #000000, #07001E, #000000)
+      `,
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <Sidebar onTabChange={"orders"} />
+
+      <div className="flex-1 overflow-y-auto text-white md:ml-64 transition-all duration-300">
+        <HistoryPage />
       </div>
     </div>
   );

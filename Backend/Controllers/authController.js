@@ -21,13 +21,11 @@ export const signUpController = async (req, res) => {
         .json({ message: "User already exists", error: error.message });
     }
     let newUser;
-    console.log("Creating new user:", { uid, email, name, role });
     if (role === "user") {
       newUser = await User.create({ uid, email, name, role });
     } else if (role === "tutor") {
       newUser = await Tutor.create({ uid, email, name, role });
     }
-    console.log("New user created:", newUser);
 
     const token = generateJWTtoken(newUser._id, role);
 
@@ -65,7 +63,6 @@ export const loginController = async (req, res) => {
       user: user,
     });
   } catch (error) {
-    console.error("Login error:", error.message);
     res.status(500).json({
       error: "Login failed. Please try again later.",
     });

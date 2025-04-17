@@ -9,9 +9,7 @@ export const requireSignIn = async (req, res, next) => {
     );
     req.user = decode;
     next();
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 export const hashPassword = async (password) => {
@@ -19,12 +17,9 @@ export const hashPassword = async (password) => {
     const salt = 10;
     const hashedPassword = await bcrypt.hash(password, salt);
     return hashedPassword;
-  } catch (error) {
-    console.log(`Error: ${error.message}`);
-  }
+  } catch (error) {}
 };
 
 export const comparePassword = async (password, hashedPassword) => {
   return await bcrypt.compare(password, hashedPassword);
 };
-

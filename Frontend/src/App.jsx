@@ -17,6 +17,7 @@ import Orders from "./Admin/Orders";
 import TutorRoute from "./ProtectedRoutes/TutorRoute";
 import TutorDashboard from "./Tutors/TutorDashboard";
 import Profile from "./Tutors/Profile";
+import History from './Tutors/History'
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
         <Route path="/tutor" element={<TutorRoute />}>
           <Route path="dashboard" element={<TutorDashboard />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="history" element={<History/>}/>
         </Route>
       </Routes>
     </>

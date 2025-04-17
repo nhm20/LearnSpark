@@ -2,16 +2,15 @@ import dotenv from "dotenv";
 import Stripe from "stripe";
 import Tutor from "../Models/tutorModel.js";
 import Order from "../Models/orderModel.js";
-import mongoose from "mongoose";
 import { generateZoomMeeting } from "../Helpers/zoomHelper.js";
 
 dotenv.config();
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 export const checkoutSessionController = async (req, res) => {
   try {
     const { course, user } = req.body;
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
     const courseId = course._id;
     const userId = user.user._id;
 
@@ -54,37 +53,40 @@ export const checkoutSessionController = async (req, res) => {
       payment_method_types: ["card"],
       line_items: lineItems,
       mode: "payment",
-      expires_at: Math.floor(Date.now() / 1000) + 1800,
-      success_url: `${process.env.CLIENT_URL}/orders`,
-      cancel_url: `${process.env.CLIENT_URL}/orders`,
+      expires_at: Math.floor(Date.now() / 1000) + 1800, // 30 minutes
+      success_url: `${process.env.CLIENT_URL}/orders?session_id={CHECKOUT_SESSION_ID}&order_id=${order._id}`,
+      cancel_url: `${process.env.CLIENT_URL}/orders?session_id={CHECKOUT_SESSION_ID}&order_id=${order._id}`,
       metadata: {
         order_id: order._id.toString(),
       },
     });
 
+    // Set timeout to check payment status after session expiration
     setTimeout(async () => {
       try {
-        const sessionDetails = await stripe.checkout.sessions.retrieve(
-          session.id
-        );
-        if (sessionDetails.status === "open") {
-          await stripe.checkout.sessions.expire(session.id);
-          await Order.findByIdAndUpdate(order._id, {
-            paymentStatus: "failed",
-          });
+        const updatedOrder = await Order.findById(order._id);
+        if (updatedOrder.paymentStatus === "pending") {
+          const sessionDetails = await stripe.checkout.sessions.retrieve(
+            session.id
+          );
+
+          if (sessionDetails.payment_status === "unpaid") {
+            updatedOrder.paymentStatus = "failed";
+            await updatedOrder.save();
+          }
         }
       } catch (error) {
-        console.error("Error expiring session:", error);
+        return;
       }
-    }, 120000);
+    }, 30 * 60 * 1000); // 30 minutes
 
     res.status(200).json({
       sessionId: session.id,
+      orderId: order._id.toString(),
       success: true,
       message: "Checkout session created successfully",
     });
   } catch (error) {
-    console.error("Error creating checkout session:", error);
     res.status(500).json({
       message: "Failed to create checkout session",
       success: false,
@@ -95,7 +97,6 @@ export const checkoutSessionController = async (req, res) => {
 export const verifyPaymentController = async (req, res) => {
   try {
     const { session_id, order_id } = req.query;
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
     if (!session_id || !order_id) {
       return res.status(400).json({
@@ -104,107 +105,147 @@ export const verifyPaymentController = async (req, res) => {
       });
     }
 
-    const session = await stripe.checkout.sessions.retrieve(session_id);
     const order = await Order.findById(order_id).populate("unitId");
-
     if (!order) {
       return res.status(404).json({
-        message: "Order not found",
         success: false,
+        message: "Order not found",
       });
     }
 
-    if (
-      session.payment_status === "paid" &&
-      order.paymentStatus === "pending"
-    ) {
-      // Get tutor details
-      const tutor = await Tutor.findById(order.tutorId);
-
-      // Create Zoom meeting only if payment is confirmed
-      const zoomLink = await generateZoomMeeting(
-        tutor.email,
-        order.unitId.name
-      );
-
-      // Update order with Zoom link and mark as paid
-      order.zoomLink = zoomLink;
-      order.paymentStatus = "completed";
-      await order.save();
-
+    // If already completed, just return the order
+    if (order.paymentStatus === "completed") {
       return res.status(200).json({
         success: true,
-        order: order,
-        message: "Payment verified successfully",
+        message: "Order already completed",
+        order,
+      });
+    }
+
+    const session = await stripe.checkout.sessions.retrieve(session_id, {
+      expand: ["payment_intent"],
+    });
+
+    // Handle different payment statuses
+    switch (session.payment_status) {
+      case "paid":
+        // Only process if not already completed
+        if (order.paymentStatus !== "completed") {
+          const tutor = await Tutor.findById(order.tutorId);
+          if (!tutor) {
+            return res.status(404).json({
+              success: false,
+              message: "Tutor not found",
+            });
+          }
+
+          const zoomLink = await generateZoomMeeting(
+            tutor.email,
+            order.unitId.name
+          );
+
+          order.zoomLink = zoomLink;
+          order.paymentStatus = "completed";
+          order.paymentDetails = {
+            stripeSessionId: session.id,
+            paymentIntentId: session.payment_intent?.id,
+            amountPaid: session.amount_total / 100,
+            currency: session.currency,
+            paymentMethod: session.payment_intent?.payment_method_types?.[0],
+          };
+          await order.save();
+        }
+
+        return res.status(200).json({
+          success: true,
+          message: "Payment verified successfully",
+          order,
+        });
+
+      case "unpaid":
+        // Payment failed
+        if (order.paymentStatus === "pending") {
+          order.paymentStatus = "failed";
+          await order.save();
+        }
+        return res.status(400).json({
+          success: false,
+          message: "Payment failed or not completed",
+        });
+
+      default:
+        // Still processing
+        return res.status(200).json({
+          success: false,
+          message: "Payment still processing",
+          status: session.payment_status,
+        });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Payment verification failed",
+    });
+  }
+};
+
+export const checkOrderStatus = async (req, res) => {
+  try {
+    const { order_id } = req.params;
+
+    const order = await Order.findById(order_id);
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
       });
     }
 
     res.status(200).json({
-      success: false,
-      message: "Payment not completed yet",
+      success: true,
+      status: order.paymentStatus,
+      order,
     });
   } catch (error) {
-    console.error("Error verifying payment:", error);
     res.status(500).json({
-      message: "Error verifying payment",
       success: false,
+      message: "Error checking order status",
     });
   }
 };
 
-export const stripeWebhookController = async (req, res) => {
-  const sig = req.headers["stripe-signature"];
-  let event;
-
+export const manualPaymentCompletion = async (req, res) => {
   try {
-    event = Stripe.webhooks.constructEvent(
-      req.body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
-  } catch (err) {
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+    const { orderId } = req.body;
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-
-    try {
-      const order = await Order.findById(session.metadata.order_id);
-
-      if (order && order.paymentStatus === "pending") {
-        const tutor = await Tutor.findById(order.tutorId);
-        const zoomLink = await generateZoomMeeting(
-          tutor.email,
-          order.unitId.name
-        );
-
-        await Order.findByIdAndUpdate(order._id, {
-          zoomLink: zoomLink,
-          paymentStatus: "completed",
-        });
-      }
-    } catch (error) {
-      console.error("Error processing successful payment:", error);
+    const order = await Order.findById(orderId).populate("unitId");
+    if (!order || order.paymentStatus !== "pending") {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found or already processed",
+      });
     }
-  }
 
-  if (event.type === "checkout.session.expired") {
-    try {
-      const order = await Order.findById(session.metadata.order_id);
-      if (order && order.paymentStatus === "pending") {
-        await Order.findByIdAndUpdate(order._id, {
-          paymentStatus: "failed",
-        });
-        console.log("Order marked as failed due to expired session");
-      }
-    } catch (err) {
-      console.error("Error handling expired session:", err);
-    }
-  }
+    const tutor = await Tutor.findById(order.tutorId);
+    const zoomLink = await generateZoomMeeting(tutor.email, order.unitId.name);
 
-  res.json({ received: true });
+    order.zoomLink = zoomLink;
+    order.paymentStatus = "completed";
+    await order.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Order manually completed",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
 };
+
 export const getOrdersByUserId = async (req, res) => {
   const { userId } = req.params;
 
@@ -250,7 +291,6 @@ export const getOrdersByUserId = async (req, res) => {
       data: formattedOrders,
     });
   } catch (err) {
-    console.error("Error fetching orders:", err);
     res.status(500).json({
       success: false,
       error: "Failed to fetch orders",

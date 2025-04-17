@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import {
   Home,
   LineChart,
@@ -12,15 +13,16 @@ import { NavLink } from "react-router-dom";
 import useAuth from "../../Context/useAuth";
 
 const Sidebar = () => {
-  const { user, logOut } = useAuth();
+  const { user: authUser, logOut } = useAuth();
+  const { user: tutor } = useSelector((state) => state.user);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLoginClick = async () => {
-    if (user) {
+    if (authUser) {
       try {
         await logOut();
       } catch (error) {
-        console.error("Error during logout:", error);
+        return;
       }
     }
     setIsMobileMenuOpen(false);
@@ -45,7 +47,7 @@ const Sidebar = () => {
     <>
       {/* Mobile Toggle Button */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-md text-white hover:bg-gray-800 transition-colors shadow-lg"
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-4xl text-white hover:bg-gray-900 transition-colors shadow-lg"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         aria-label="Toggle menu"
       >
@@ -57,7 +59,7 @@ const Sidebar = () => {
       </button>
 
       <aside
-        className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-[#07001E] text-white transition-transform duration-300 ease-in-out transform ${
+        className={`fixed inset-y-0 left-0 z-40 w-48 text-white transition-transform duration-300 ease-in-out transform ${
           isMobileMenuOpen
             ? "translate-x-0 shadow-xl"
             : "-translate-x-full md:translate-x-0"
@@ -66,12 +68,25 @@ const Sidebar = () => {
       >
         <div className="flex flex-col h-full justify-between py-8 px-4 relative">
           {/* Border Line */}
-          <div className="hidden md:block absolute top-8 bottom-8 right-0 w-px bg-gray-700" />
+          <div className="absolute top-8 bottom-8 right-0 w-px bg-gray-700" />
 
           {/* Nav content */}
-          <div className="space-y-8">
+          <div className="space-y-8 pt-6">
             <div className="mb-2">
               <h1 className="text-2xl text-center text-white">LearnSpark</h1>
+            </div>
+
+            {/* Tutor Profile Section */}
+            <div className="flex flex-col items-center text-center space-y-2">
+              <img
+                src={tutor?.avatar || "https://i.pravatar.cc/100"}
+                alt="profile"
+                className="w-16 h-16 rounded-full border-2 border-gray-600"
+              />
+              <p className="font-semibold">
+                {tutor?.name || (authUser ? authUser.displayName : "Guest")}
+              </p>
+              <p className="text-xs text-gray-400">Tutor</p>
             </div>
 
             <nav className="space-y-2">
@@ -101,12 +116,14 @@ const Sidebar = () => {
               onClick={handleLoginClick}
               className="flex items-center justify-start gap-3 w-full px-4 py-3 mx-2 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
             >
-              {user ? (
+              {authUser ? (
                 <LogOut className="w-5 h-5" />
               ) : (
                 <LogIn className="w-5 h-5" />
               )}
-              <p className="text-sm font-medium">{user ? "Logout" : "Login"}</p>
+              <p className="text-sm font-medium">
+                {authUser ? "Logout" : "Login"}
+              </p>
             </button>
           </div>
         </div>
