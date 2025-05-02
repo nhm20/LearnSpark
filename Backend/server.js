@@ -14,7 +14,7 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:5174"];
+const allowedOrigins = ["https://learn-spark-9mzc.vercel.app/"];
 
 app.use(
   cors({
