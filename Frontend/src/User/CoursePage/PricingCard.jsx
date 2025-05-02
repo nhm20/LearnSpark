@@ -57,7 +57,7 @@ const PricingCard = ({ course }) => {
         setPaymentStatus("failed");
         setIsProcessing(false);
       }
-    }, 5000); // Poll every 5 seconds
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, [orderId, navigate]);
@@ -114,11 +114,12 @@ const PricingCard = ({ course }) => {
   const isLoading = isProcessing || paymentStatus === "processing";
 
   return (
-    <div className="border  border-gray-800/50 rounded-xl overflow-hidden shadow-lg w-full bg-[rgba(1,6,38,0.5)]">
+    <div className="border border-gray-800/50 rounded-xl overflow-hidden shadow-lg w-full bg-[rgba(1,6,38,0.5)]">
       <div className="p-6">
         <h3 className="text-xl font-medium text-white mb-4">
           Enroll in Course
         </h3>
+        {console.log(user)}
 
         {error && (
           <div className="mb-4 p-3 bg-red-900/20 border border-red-700 text-red-300 rounded-lg flex items-start gap-2">
@@ -147,19 +148,19 @@ const PricingCard = ({ course }) => {
           </div>
         )}
 
-        <div className="flex items-end gap-2 mb-6">
-          <div className="text-3xl font-medium font-Poppins text-white">
-            {course.price ? `₹ ${course.price.toFixed(2)}` : "Free"}
-          </div>
-          {course.originalPrice && (
-            <div className="text-lg text-gray-400 line-through">
-              ₹ {course.originalPrice.toFixed(2)}
-            </div>
-          )}
-        </div>
-
         {user?.isAuthenticated ? (
           <>
+            <div className="flex items-end gap-2 mb-6">
+              <div className="text-3xl font-medium font-Poppins text-white">
+                {course.price ? `₹ ${course.price.toFixed(2)}` : "Free"}
+              </div>
+              {course.originalPrice && (
+                <div className="text-lg text-gray-400 line-through">
+                  ₹ {course.originalPrice.toFixed(2)}
+                </div>
+              )}
+            </div>
+
             <div className="mb-4 bg-white rounded p-4">
               <CardElement
                 options={{

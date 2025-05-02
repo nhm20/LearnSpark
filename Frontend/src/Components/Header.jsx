@@ -108,7 +108,7 @@ const Header = () => {
                   className="w-full flex items-center justify-center gap-2 px-4 py-3 text-lg text-gray-300 hover:text-white hover:bg-gray-800 rounded-lg transition"
                 >
                   <User size={20} />
-                  <span>Profile</span>
+                  Profile
                 </button>
               )}
               <button
@@ -123,7 +123,7 @@ const Header = () => {
                       : "text-blue-300"
                   }`}
                 />
-                <span>Cart</span>
+                Cart
               </button>
               <button
                 onClick={handleLoginClick}

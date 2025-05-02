@@ -8,12 +8,14 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { user } = useSelector((state) => state.user);
+
+  const { user, isAuthenticated } = useSelector((state) => state.user);
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       setError(null);
+
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_APP_SERVER_URL}/api/orders/${user._id}`
@@ -22,19 +24,24 @@ const OrdersPage = () => {
         if (data.success) {
           setOrders(data.data || []);
         } else {
-          setError(new Error(data.error || "Failed to fetch orders"));
+          throw new Error(data.error || "Failed to fetch orders");
         }
       } catch (err) {
-        setError(err);
+        setError(
+          err.message || "Something went wrong. Please try again later."
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    if (user?._id) {
+    if (isAuthenticated && user?._id) {
       fetchOrders();
+    } else {
+      setLoading(false);
+      setError("You need to be logged in to view your orders.");
     }
-  }, [user?._id]);
+  }, [user?._id, isAuthenticated]);
 
   return (
     <>
@@ -42,14 +49,18 @@ const OrdersPage = () => {
       <div className="min-h-screen pt-16 pb-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#04012e] to-black">
         <div className="max-w-7xl mx-auto">
           <div className="mb-10 text-center sm:text-left">
-            <h1 className="text-4xl font-semibold text-white">Order History</h1>
+            <h1 className="text-4xl font-semibold text-white">Your Orders</h1>
             <p className="mt-2 text-base text-gray-400">
-              View all your purchased courses and sessions
+              Check out all the courses and sessions you've purchased.
             </p>
           </div>
 
           <div className="bg-black border border-gray-800 rounded-2xl p-6 sm:p-8 shadow-2xl">
-            <OrdersTable orders={orders} loading={loading} error={error} />
+            {error ? (
+              <p className="text-red-500 text-center">{error}</p>
+            ) : (
+              <OrdersTable orders={orders} loading={loading} />
+            )}
           </div>
         </div>
       </div>
