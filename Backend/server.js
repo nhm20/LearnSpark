@@ -14,7 +14,7 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [process.env.CLIENT_URL, process.env.CLIENT_URL_PROD];
+const allowedOrigins = [process.env.CLIENT_URL];
 
 const vercelPreviewRegex = /^https:\/\/learn-spark-frontend.*\.vercel\.app$/;
 
