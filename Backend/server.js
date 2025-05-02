@@ -14,17 +14,15 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = [process.env.CLIENT_URL];
+const allowedOrigins = ["http://localhost:5174];
 
-const vercelPreviewRegex = /^https:\/\/learn-spark-frontend.*\.vercel\.app$/;
 
 app.use(
   cors({
     origin: function (origin, callback) {
       if (
         !origin ||
-        allowedOrigins.includes(origin) ||
-        vercelPreviewRegex.test(origin)
+        allowedOrigins.includes(origin) 
       ) {
         callback(null, true);
       } else {
