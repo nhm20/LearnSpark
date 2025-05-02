@@ -59,15 +59,7 @@ const CoursesPage = () => {
     );
   }, [searchResults, selectedClassLevel, selectedSubject, selectedSort]);
 
-  const uniqueSubjects = [
-    "Mathematics",
-    "Physics",
-    "Chemistry",
-    "Biology",
-    "Social Studies",
-    "English",
-    "Science",
-  ];
+  const uniqueSubjects = ["English", "Aptitude", "Interviews"];
 
   const loadMore = () => setPage((prev) => prev + 1);
 

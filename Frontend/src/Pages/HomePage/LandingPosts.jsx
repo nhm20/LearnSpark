@@ -24,15 +24,15 @@ const LandingPosts = () => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY.current) {
-        setScrollDirection('down');
+        setScrollDirection("down");
       } else if (currentScrollY < lastScrollY.current) {
-        setScrollDirection('up');
+        setScrollDirection("up");
       }
       lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Handle statement rotation
@@ -52,8 +52,10 @@ const LandingPosts = () => {
     const typeCharacter = () => {
       if (typingIndex < statements[currentStatement].length) {
         timeoutRef.current = setTimeout(() => {
-          setDisplayText(prev => prev + statements[currentStatement].charAt(typingIndex));
-          setTypingIndex(prev => prev + 1);
+          setDisplayText(
+            (prev) => prev + statements[currentStatement].charAt(typingIndex)
+          );
+          setTypingIndex((prev) => prev + 1);
         }, 100);
       }
     };
@@ -67,54 +69,53 @@ const LandingPosts = () => {
   }, [typingIndex, currentStatement]);
 
   const handleSignup = () => {
-    navigate("/signup");
+    navigate("/tutor-signup");
   };
 
   const handleCourses = () => {
     navigate("/courses");
   };
 
-  // Button animation classes based on scroll direction
   const getButtonAnimationClass = (buttonType) => {
-    if (scrollDirection === 'down') {
-      return buttonType === 'primary' 
-        ? 'translate-x-[-20%]' 
-        : 'translate-x-[20%]';
-    } else if (scrollDirection === 'up') {
-      return 'translate-x-0';
+    if (scrollDirection === "down") {
+      return buttonType === "primary"
+        ? "translate-x-[-20%]"
+        : "translate-x-[20%]";
+    } else if (scrollDirection === "up") {
+      return "translate-x-0";
     }
-    return '';
+    return "";
   };
 
   return (
     <div className="relative min-h-[65vh] bg-gradient-to-b from-transparent via-[#0C014D] via-40% to-black flex items-end pb-24 overflow-x-hidden">
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6">
-        {/* Consistent spacer height across all screens */}
         <div className="h-[25vh]"></div>
 
-        {/* Text container */}
         <div className="min-h-[160px] mb-8 flex items-center justify-center w-full">
           <h2 className="font-OpenSans tracking-tighter text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white text-center px-4 w-full leading-tight md:leading-snug">
             {displayText}
           </h2>
         </div>
 
-        {/* Subtitle */}
         <p className="text-white text-lg sm:text-xl md:text-2xl text-center mb-10 max-w-2xl mx-auto font-Montserrat px-4 leading-relaxed">
-          Join thousands of learners and educators transforming their futures today
+          Join thousands of learners and educators transforming their futures
+          today
         </p>
-
-        {/* Buttons with scroll animations */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
           <button
-            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-all duration-500 font-medium font-Montserrat text-base sm:text-lg ${getButtonAnimationClass('primary')}`}
+            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-all duration-500 font-medium font-Montserrat text-base sm:text-lg ${getButtonAnimationClass(
+              "primary"
+            )}`}
             onClick={handleSignup}
           >
-            Get Started <ArrowRight className="w-5 h-5" />
+           Start Tutoring <ArrowRight className="w-5 h-5" />
           </button>
-          
+
           <button
-            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-transparent border border-white hover:bg-white/10 text-white rounded-md transition-all duration-500 font-medium font-Montserrat text-base sm:text-lg ${getButtonAnimationClass('secondary')}`}
+            className={`flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-transparent border border-white hover:bg-white/10 text-white rounded-md transition-all duration-500 font-medium font-Montserrat text-base sm:text-lg ${getButtonAnimationClass(
+              "secondary"
+            )}`}
             onClick={handleCourses}
           >
             Browse Courses <BookOpen className="w-5 h-5" />

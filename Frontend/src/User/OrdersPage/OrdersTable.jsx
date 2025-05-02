@@ -52,9 +52,7 @@ const OrdersTable = ({ orders, loading, error }) => {
                 <th className="px-6 py-4 text-left text-xs font-semibold text-white/80 uppercase tracking-wider rounded-tl-2xl">
                   Course
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-white/80 uppercase tracking-wider">
-                  Tutor
-                </th>
+               
                 <th className="px-6 py-4 text-left text-xs font-semibold text-white/80 uppercase tracking-wider">
                   Amount
                 </th>
@@ -140,16 +138,7 @@ const OrdersTable = ({ orders, loading, error }) => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm text-white">
-                        {order.tutor?.name || "N/A"}
-                      </div>
-                      {order.tutor?.specialization && (
-                        <div className="text-xs text-gray-400">
-                          {order.tutor.specialization}
-                        </div>
-                      )}
-                    </td>
+                    
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center text-sm text-white">
                         <IndianRupee className="h-4 w-4 mr-1" />

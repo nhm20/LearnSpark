@@ -17,7 +17,9 @@ import Orders from "./Admin/Orders";
 import TutorRoute from "./ProtectedRoutes/TutorRoute";
 import TutorDashboard from "./Tutors/TutorDashboard";
 import Profile from "./Tutors/Profile";
-import History from './Tutors/History'
+import History from './Tutors/History';
+import UserProfile from "./User/Profile";
+
 
 function App() {
   return (
@@ -31,6 +33,7 @@ function App() {
         <Route path="/courses" element={<CoursesPage />} />
         <Route path="/course/:id" element={<CourseDetails />} />
         <Route path="/orders" element={<OrdersPage />} />
+        <Route path="/profile" element={<UserProfile />} />
 
         <Route path="/admin" element={<AdminRoute />}>
           <Route path="dashboard" element={<AdminDashBoard />} />
@@ -44,7 +47,7 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="history" element={<History/>}/>
         </Route>
-      </Routes>
+        </Routes>
     </>
   );
 }

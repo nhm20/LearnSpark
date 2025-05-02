@@ -79,7 +79,6 @@ const UserLogin = () => {
       );
       const idToken = await user.getIdToken();
       const data = await mongodbRequest(idToken);
-
       if (data.error) {
         setError({ general: data.error });
         return;

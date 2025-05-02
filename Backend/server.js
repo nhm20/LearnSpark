@@ -6,6 +6,8 @@ import tutorRoutes from "./Routes/tutorRoutes.js";
 import userRoutes from "./Routes/userRoutes.js";
 import orderRoutes from "./Routes/orderRoutes.js";
 import authRoutes from "./Routes/authRoutes.js";
+import webhookRoutes from "./Routes/webhookRoutes.js";
+import paymentRoutes from "./Routes/paymentRoutes.js";
 import cors from "cors";
 dotenv.config();
 connectDB();
@@ -21,6 +23,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+app.use("/webhook", express.raw({ type: "application/json" }), webhookRoutes);
+
 app.use(express.json());
 
 // Routes
@@ -29,6 +34,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/units", unitRoutes);
 app.use("/api/tutors", tutorRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/payments", paymentRoutes);
 
 app.use("/", (req, res) => {
   res.json({ message: "Welcome to the backend API" });

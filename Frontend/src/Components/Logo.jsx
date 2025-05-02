@@ -4,13 +4,6 @@ import React from "react";
 const Logo = () => {
   return (
     <div className="flex items-center gap-3">
-      <IoSparklesSharp
-        style={{
-          fontSize: 50,
-          color: "#FFA500", // Vibrant orange
-          filter: "drop-shadow(0 0 4px rgba(255, 165, 0, 0.7))",
-        }}
-      />
       <p className="text-3xl md:text-5xl font-Montserrat font-normal  pr-2 whitespace-nowrap overflow-hidden animate-typing text-blue-800">
         LearnSpark
       </p>

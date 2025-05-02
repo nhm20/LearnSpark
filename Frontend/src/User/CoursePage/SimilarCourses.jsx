@@ -80,7 +80,7 @@ const SimilarCourses = ({ courseId, currentSubject }) => {
   }
 
   return (
-    <div className="w-full relative py-12 bg-gradient-to-b from-black via-[#020621] to-black">
+    <div className="w-full  relative py-12 bg-gradient-to-b from-black via-[#020621] to-black">
       <h2 className="text-2xl font-bold text-white mb-8 px-8 relative z-10">
         You might also like
       </h2>
