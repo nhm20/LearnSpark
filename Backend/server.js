@@ -14,7 +14,7 @@ connectDB();
 
 const app = express();
 
-const allowedOrigins = ["http://localhost:5174];
+const allowedOrigins = ["http://localhost:5174"];
 
 
 app.use(
